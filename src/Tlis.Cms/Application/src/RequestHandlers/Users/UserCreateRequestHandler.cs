@@ -9,7 +9,6 @@ using System.Linq;
 using Tlis.Cms.Domain.Entities;
 using Tlis.Cms.Infrastructure.Services.Interfaces;
 using Tlis.Cms.Infrastructure.Persistence.Interfaces;
-using Tlis.Cms.Domain.Constants;
 
 namespace Tlis.Cms.Application.RequestHandlers.Users;
 
@@ -26,12 +25,9 @@ internal sealed class UserCreateRequestHandler(
 
         foreach (var membershipHistory in request.MembershipHistory)
         {
-            var membershipId = await unitOfWork.MembershipRepository.GetIdByStatus(MembershipStatus.Archive)
-                ?? throw new MembershipNotFoundException(MembershipStatus.Archive);
-
             newUser.MembershipHistory.Add(new UserMembershipHistory
             {
-                MembershipId = membershipId,
+                MembershipId = membershipHistory.MembershipId,
                 ChangeDate = membershipHistory.ChangeDate,
                 Description = membershipHistory.Description
             });

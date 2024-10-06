@@ -53,7 +53,7 @@ public sealed class UserRoleHistoryCreateRequest
 
 public sealed class UserMembershipHistoryCreateRequest
 {
-    public MembershipStatus Status { get; set; }
+    public required Guid MembershipId { get; set; }
 
     public DateTime ChangeDate { get; set; }
 

@@ -2,46 +2,51 @@ using System.Text.Json.Serialization;
 using Tlis.Cms.Api.Extensions;
 using Tlis.Cms.Application;
 
-namespace Tlis.Cms.Api
+namespace Tlis.Cms.Api;
+
+public class Program
 {
-    public static class Program
+    public static void Main(string[] args) => SetupApplication(args).Run();
+
+    public static WebApplication SetupApplication(string[] args)
     {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+        var app = CreateWebApplicationBuilder(args).Build();
 
-            builder.Services
-                .AddControllers()
-                .AddJsonOptions(options =>
-                {
-                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-                });
+        app.UseExceptionHandler();
+        app.UseStatusCodePages();
 
-            builder.Services.ConfigureProblemDetails();
-            builder.Services.ConfigureSwagger();
-            // builder.Services.ConfigureAuthorization(builder.Configuration);
+        app.UseSwagger();
+        app.UseSwaggerUI();
 
-            builder.Logging.ConfigureOtel(builder.Environment);
-            builder.Services.ConfigureOtel(builder.Environment);
-            builder.Services.AddMemoryCache();
+        app.UseAuthentication();
+        app.UseAuthorization();
 
-            builder.Services.AddApplication(builder.Configuration);
+        app.MapControllers();
 
-            var app = builder.Build();
-            
-            app.UseExceptionHandler();
-            app.UseStatusCodePages();
+        return app;
+    }
 
-            app.UseSwagger();
-            app.UseSwaggerUI();
+    public static WebApplicationBuilder CreateWebApplicationBuilder(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
 
-            app.UseAuthentication();
-            app.UseAuthorization();
+        builder.Services
+            .AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
 
-            app.MapControllers();
+        builder.Services.ConfigureProblemDetails();
+        builder.Services.ConfigureSwagger();
+        // builder.Services.ConfigureAuthorization(builder.Configuration);
 
-            app.Run();
-        }
+        builder.Logging.ConfigureOtel(builder.Environment);
+        builder.Services.ConfigureOtel(builder.Environment);
+        builder.Services.AddMemoryCache();
+
+        builder.Services.AddApplication(builder.Configuration);
+
+        return builder;
     }
 }
-
