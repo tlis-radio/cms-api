@@ -20,6 +20,6 @@ internal sealed class ShowDetailsGetRequestHandler(IUnitOfWork unitOfWork)
             return null;
         }
 
-        return ShowMappings.ToDto(show);
+        return ShowMappings.MapToShowDetailsGetResponse(show);
     }
 }

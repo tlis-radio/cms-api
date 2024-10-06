@@ -22,7 +22,7 @@ internal sealed class ShowPaginationGetRequestHandler(IUnitOfWork unitOfWork)
             Limit = shows.Limit,
             Page = shows.Page,
             TotalPages = shows.TotalPages,
-            Results = shows.Results.Select(ShowMappings.ToPaginationDto).ToList()
+            Results = shows.Results.Select(ShowMappings.MapToShowPaginationGetResponse).ToList()
         };
     }
 }

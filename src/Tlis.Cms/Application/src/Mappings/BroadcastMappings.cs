@@ -8,7 +8,7 @@ namespace Tlis.Cms.Application.Mappings;
 
 public static class BroadcastMappings
 {
-    public static Broadcast ToEntity(BroadcastCreateRequest request)
+    public static Broadcast MapToBroadcast(BroadcastCreateRequest request)
     {
         return new Broadcast
         {
@@ -21,7 +21,7 @@ public static class BroadcastMappings
         };
     }
 
-    public static BroadcastDetailsGetResponse? ToBroadcastDetailsGetResponse(Broadcast? entity)
+    public static BroadcastDetailsGetResponse? MapToBroadcastDetailsGetResponse(Broadcast? entity)
     {
         if (entity is null)
         {
@@ -52,7 +52,7 @@ public static class BroadcastMappings
         return response;
     }
 
-    public static BroadcastPaginationGetResponse ToPaginationDto(Broadcast entity)
+    public static BroadcastPaginationGetResponse MapToBroadcastPaginationGetResponse(Broadcast entity)
     {
         return new BroadcastPaginationGetResponse
         {

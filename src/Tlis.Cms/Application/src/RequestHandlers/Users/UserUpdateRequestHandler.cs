@@ -86,7 +86,7 @@ internal sealed class UserUpdateRequestHandler(
         var added = updatedHistory.Where(x => x.Id is null).Select(UserMappings.MapToUserMembershipHistory);
 
         var existingOptionsDict = existing.MembershipHistory.ToDictionary(key => key.Id, value => value);
-        var existingOptionsUpdated = updatedHistory.Where(x => x.Id is not null).Select(x => UserMappings.MapToUserMembershipHistory(existingOptionsDict[x.Id!.Value], x));
+        var existingOptionsUpdated = updatedHistory.Where(x => x.Id is not null).Select(x => UserMappings.MapToExistingUserMembershipHistory(existingOptionsDict[x.Id!.Value], x));
 
         existing.MembershipHistory = added.Concat(existingOptionsUpdated).ToList();
     }

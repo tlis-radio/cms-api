@@ -7,7 +7,7 @@ namespace Tlis.Cms.Api.Swagger;
 
 internal class ProblemDetailsOperationFilter : IOperationFilter
 {
-        private static readonly OpenApiObject Status400ProblemDetails = new()
+    private static readonly OpenApiObject Status400ProblemDetails = new()
     {
         ["type"] = new OpenApiString("https://datatracker.ietf.org/html/rfc7231#section-6.5.1"),
         ["title"] = new OpenApiString(ReasonPhrases.GetReasonPhrase(StatusCodes.Status400BadRequest)),

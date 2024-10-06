@@ -12,7 +12,7 @@ internal sealed class ShowCreateRequestHandler(IUnitOfWork unitOfWork) : IReques
 {
     public async Task<BaseCreateResponse> Handle(ShowCreateRequest request, CancellationToken cancellationToken)
     {   
-        var toCreate = ShowMappings.ToEntity(request);
+        var toCreate = ShowMappings.MapToShow(request);
 
         await unitOfWork.ShowRepository.InsertAsync(toCreate);
         await unitOfWork.SaveChangesAsync();

@@ -5,7 +5,7 @@ namespace Tlis.Cms.Application.Mappings;
 
 internal static class RoleMappings
 {
-    public static RoleGetAllResponseItem ToRoleGetAllResponseItem(Role dto)
+    public static RoleGetAllResponseItem MapToRoleGetAllResponseItem(Role dto)
     {
         return new RoleGetAllResponseItem
         {

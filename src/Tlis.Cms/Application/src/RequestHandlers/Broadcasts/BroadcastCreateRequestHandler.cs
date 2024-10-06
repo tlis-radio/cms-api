@@ -12,7 +12,7 @@ internal sealed class BroadcastCreateRequestHandler(IUnitOfWork unitOfWork) : IR
 {
     public async Task<BaseCreateResponse> Handle(BroadcastCreateRequest request, CancellationToken cancellationToken)
     {
-        var broadcast = BroadcastMappings.ToEntity(request);
+        var broadcast = BroadcastMappings.MapToBroadcast(request);
 
         await unitOfWork.BroadcastRepository.InsertAsync(broadcast);
         await unitOfWork.SaveChangesAsync();

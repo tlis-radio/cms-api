@@ -14,6 +14,6 @@ internal sealed class BroadcastDetailsGetRequestHandler(IUnitOfWork unitOfWork) 
     {
         var broadcast = await unitOfWork.BroadcastRepository.GetByIdAsync(request.Id, asTracking: false);
 
-        return BroadcastMappings.ToBroadcastDetailsGetResponse(broadcast);
+        return BroadcastMappings.MapToBroadcastDetailsGetResponse(broadcast);
     }
 }

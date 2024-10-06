@@ -10,7 +10,7 @@ namespace Tlis.Cms.Application.Mappings;
 
 public static class ShowMappings
 {
-    public static ShowPaginationGetResponse ToPaginationDto(Show entity)
+    public static ShowPaginationGetResponse MapToShowPaginationGetResponse(Show entity)
     {
         return new ShowPaginationGetResponse
         {
@@ -23,7 +23,7 @@ public static class ShowMappings
         };
     }
 
-    public static ShowDetailsGetResponse ToDto(Show entity)
+    public static ShowDetailsGetResponse MapToShowDetailsGetResponse(Show entity)
     {
         var response = new ShowDetailsGetResponse
         {
@@ -49,7 +49,7 @@ public static class ShowMappings
         return response;
     }
 
-    public static Show ToEntity(ShowCreateRequest request)
+    public static Show MapToShow(ShowCreateRequest request)
     {
         return new Show
         {

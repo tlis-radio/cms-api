@@ -22,7 +22,7 @@ internal sealed class BroadcastPaginationGetRequestHandler(IUnitOfWork unitOfWor
             Limit = broadcasts.Limit,
             Page = broadcasts.Page,
             TotalPages = broadcasts.TotalPages,
-            Results = broadcasts.Results.Select(BroadcastMappings.ToPaginationDto).ToList()
+            Results = broadcasts.Results.Select(BroadcastMappings.MapToBroadcastPaginationGetResponse).ToList()
         };
     }
 }

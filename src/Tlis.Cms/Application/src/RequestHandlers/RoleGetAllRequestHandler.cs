@@ -18,7 +18,7 @@ internal sealed class RoleGetAllRequestHandler(IUnitOfWork unitOfWork)
 
         return new RoleGetAllResponse
         {
-            Results = response.Select(RoleMappings.ToRoleGetAllResponseItem).ToList()
+            Results = response.Select(RoleMappings.MapToRoleGetAllResponseItem).ToList()
         };
     }
 }

@@ -107,7 +107,7 @@ internal static class UserMappings
         };
     }
 
-    public static UserMembershipHistory MapToUserMembershipHistory(UserMembershipHistory existing, UserUpdateRequestMembershipHistory dto)
+    public static UserMembershipHistory MapToExistingUserMembershipHistory(UserMembershipHistory existing, UserUpdateRequestMembershipHistory dto)
     {
         existing.MembershipId = dto.MembershipId;
         existing.ChangeDate = dto.ChangeDate;
