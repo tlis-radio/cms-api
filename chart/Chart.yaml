@@ -1,0 +1,9 @@
+apiVersion: v2
+name: cms-management-api
+version: 1.0.0
+description: Cms Api Managemet
+type: application
+keywords:
+  - cms
+  - management-api
+home: www.tlis.sk

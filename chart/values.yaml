@@ -1,0 +1,20 @@
+spec:
+  replicas: 1
+  imagePullSecrets: ""
+
+environment: ""
+
+config:
+  otel:
+    exporterOtlpEndpoint: ""
+  connectionStrings:
+    postgres: ""
+  jwt:
+    audience: ""
+    authority: ""
+    requireHttpsMetadata: true
+  cmsServices:
+    userManagement:
+      baseAddress: ""
+    imageAssetManagement:
+      baseAddress: ""

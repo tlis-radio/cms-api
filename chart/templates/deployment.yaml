@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.spec.replicas }}
+  selector:
+    matchLabels:
+      service: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+        service: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Release.Name }}
+          image: tliscr.azurecr.io/cms-api-management:{{ .Chart.AppVersion }}
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+          - mountPath: /app/appsettings.{{ .Values.environment }}.json
+            name: config
+            subPath: api.appsettings.json
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: {{ .Values.environment }}
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: {{ .Values.config.otel.exporterOtlpEndpoint }}
+            - name: OTEL_EXPORTER_OTLP_PROTOCOL
+              value: otlp
+      initContainers:
+        - name: ef-migration
+          image: tliscr.azurecr.io/cms-api-management-cli:{{ .Chart.AppVersion }}
+          args: ['migration']
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+          - mountPath: /app/appsettings.{{ .Values.environment }}.json
+            name: config
+            subPath: cli.appsettings.json
+      {{ if .Values.spec.imagePullSecrets }}
+      imagePullSecrets:
+        - name: {{ .Values.spec.imagePullSecrets | quote }}
+      {{ end }}
+      volumes:
+      - name: config
+        configMap:
+          name: {{ .Release.Name }}
