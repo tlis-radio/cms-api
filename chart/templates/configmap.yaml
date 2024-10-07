@@ -27,8 +27,16 @@ data:
             "ClientId": {{ .Values.config.auth0.clientId | quote }},
             "ClientSecret": {{ .Values.config.auth0.clientSecret | quote }}
         },
-        "ServiceUrls": {
-            "StorageAccount": {{ .Values.config.serviceUrls.storageAccount | quote }}
+        "CloudStorage": {
+            "Cdn": {
+                "Url": {{ .Values.config.cloudStorage.cdn.url | quote }},
+                "Folders": {
+                    "Images": "images"
+                }
+            },
+            "Authentication": {
+                "ConnectionString": {{ .Values.config.cloudStorage.authentication.connectionString | quote }}
+            }
         },
         "ImageProcessing": {{ .Values.config.imageProcessing | toJson }}
     }
@@ -42,5 +50,10 @@ data:
         },
         "ConnectionStrings": {
             "Postgres": {{ .Values.config.connectionStrings.postgres | quote }}
+        },
+        "Auth0": {
+            "Domain": {{ .Values.config.auth0.domain | quote }},
+            "ClientId": {{ .Values.config.auth0.clientId | quote }},
+            "ClientSecret": {{ .Values.config.auth0.clientSecret | quote }}
         }
     }

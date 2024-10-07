@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using Tlis.Cms.Application.Configurations;
 using Tlis.Cms.Application.Contracts.Api.Requests.Shows;
 using Tlis.Cms.Application.Services.Interfaces;
+using Tlis.Cms.Domain.Constants;
 using Tlis.Cms.Infrastructure.Persistence.Interfaces;
 using Tlis.Cms.Infrastructure.Services.Interfaces;
 
@@ -12,7 +13,7 @@ namespace Tlis.Cms.Application.RequestHandlers.Shows;
 
 internal sealed class ShowUpdateProfileImageRequestHandler(
     IImageProcessingService imageProcessingService,
-    IStorageService storageService,
+    ICloudeStorageService storageService,
     IOptions<ImageProcessingConfiguration> imageProcessingConfiguration,
     IUnitOfWork unitOfWork)
     : IRequestHandler<ShowUpdateProfileImageRequest, bool>
@@ -29,16 +30,17 @@ internal sealed class ShowUpdateProfileImageRequestHandler(
 
         if (show.ProfileImage is not null)
         {
-            await storageService.DeleteImage(show.ProfileImage.Url);
+            await storageService.DeleteShowImage(show.ProfileImage.FileName);
 
             foreach (var crop in show.ProfileImage.Crops)
             {
-                await storageService.DeleteImage(crop.Url);
+                await storageService.DeleteShowImage(crop.Url);
             }
         }
 
-        var profileImage = await imageProcessingService.CreateImageAsync(
+        var profileImage = await imageProcessingService.ProcessImageAsync(
             request.ProfileImage,
+            ImageType.Show,
             imageProcessingConfiguration.Value.Show);
 
         await unitOfWork.ImageRepository.InsertAsync(profileImage);

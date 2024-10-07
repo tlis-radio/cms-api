@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using Tlis.Cms.Application.Configurations;
 using Tlis.Cms.Application.Contracts.Api.Requests.Broadcasts;
 using Tlis.Cms.Application.Services.Interfaces;
+using Tlis.Cms.Domain.Constants;
 using Tlis.Cms.Infrastructure.Persistence.Interfaces;
 using Tlis.Cms.Infrastructure.Services.Interfaces;
 
@@ -12,7 +13,7 @@ namespace Tlis.Cms.Application.RequestHandlers.Broadcasts;
 
 internal sealed class BroadcastUpdateImageRequestHandler(
     IImageProcessingService imageProcessingService,
-    IStorageService storageService,
+    ICloudeStorageService storageService,
     IOptions<ImageProcessingConfiguration> imageProcessingConfiguration,
     IUnitOfWork unitOfWork)
     : IRequestHandler<BroadcastUpdateImageRequest, bool>
@@ -29,16 +30,17 @@ internal sealed class BroadcastUpdateImageRequestHandler(
 
         if (broadcast.Image is not null)
         {
-            await storageService.DeleteImage(broadcast.Image.Url);
+            await storageService.DeleteBroadcastImage(broadcast.Image.FileName);
 
             foreach (var crop in broadcast.Image.Crops)
             {
-                await storageService.DeleteImage(crop.Url);
+                await storageService.DeleteBroadcastImage(crop.Url);
             }
         }
 
-        var image = await imageProcessingService.CreateImageAsync(
+        var image = await imageProcessingService.ProcessImageAsync(
             request.Image,
+            ImageType.Broadcast,
             imageProcessingConfiguration.Value.Broadcast);
 
         await unitOfWork.ImageRepository.InsertAsync(image);

@@ -16,12 +16,12 @@ public static class DependencyInjection
     {
         // TODO: oddelit
         services
-            .AddOptions<ServiceUrlsConfiguration>()
-            .Bind(configuration.GetSection("ServiceUrls"))
+            .AddOptions<CloudStorageConfiguration>()
+            .Bind(configuration.GetSection("CloudStorage"))
             .ValidateDataAnnotations()
             .ValidateOnStart();
 
-        services.AddSingleton<IStorageService, StorageService>();
+        services.AddSingleton<ICloudeStorageService, CloudStorageService>();
 
         //---
 
@@ -29,7 +29,7 @@ public static class DependencyInjection
         services.AddTransient<IUnitOfWork, UnitOfWork>();
 
         services.AddScoped<ICacheService, CacheService>();
-        services.AddScoped<IRoleService, RoleService>();
+        services.AddScoped<IUserRoleService, RoleService>();
 
         services.AddAuthProviderManagementService(configuration);
     }
@@ -37,12 +37,12 @@ public static class DependencyInjection
     public static void AddAuthProviderManagementService(this IServiceCollection services, IConfiguration configuration)
     {
         services
-            .AddOptions<Auth0Configuration>()
-            .Bind(configuration.GetSection("Auth0"))
+            .AddOptions<AuthProviderConfiguration>()
+            .Bind(configuration.GetSection("AuthProvider"))
             .ValidateDataAnnotations()
             .ValidateOnStart();
 
-        services.AddHttpClient<ITokenProviderService, TokenProviderService>();
+        services.AddHttpClient<IAuthProviderTokenService, AuthProviderTokenService>();
         services.AddScoped<IAuthProviderManagementService, AuthProviderManagementService>();
     }
 

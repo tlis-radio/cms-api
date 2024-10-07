@@ -45,7 +45,7 @@ public static class BroadcastMappings
             Image = entity.Image is null ? null : new BroadcastDetailsGetResponseImage
             {
                 Id = entity.Image.Id,
-                Url = entity.Image?.Url ?? string.Empty
+                Url = entity.Image?.FileName ?? string.Empty
             }
         };
 

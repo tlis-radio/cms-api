@@ -55,7 +55,7 @@ internal static class UserMappings
                 : new UserGetResponseImage
                 {
                     Id = entity.ProfileImage.Id,
-                    Url = entity.ProfileImage.Url
+                    Url = entity.ProfileImage.FileName
                 }
         };
 

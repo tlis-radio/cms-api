@@ -11,7 +11,7 @@ public class Image : BaseEntity
 
     public long Size { get; set; }
 
-    public string Url { get; set; } = null!;
+    public string FileName { get; set; } = null!;
 
     public virtual ICollection<Crop> Crops { get; set; } = [];
 }

@@ -9,7 +9,7 @@ namespace Tlis.Cms.Application.RequestHandlers.Users;
 
 internal sealed class UserDeleteRequestHandler(
     IAuthProviderManagementService authProviderManagementService,
-    IStorageService storageService,
+    ICloudeStorageService storageService,
     IUnitOfWork unitOfWork)
     : IRequestHandler<UserDeleteRequest, bool>
 {
@@ -35,11 +35,11 @@ internal sealed class UserDeleteRequestHandler(
 
         if (user.ProfileImage is not null)
         {
-            await storageService.DeleteImage(user.ProfileImage.Url);
+            await storageService.DeleteUserImage(user.ProfileImage.FileName);
 
             foreach (var crop in user.ProfileImage.Crops)
             {
-                await storageService.DeleteImage(crop.Url);
+                await storageService.DeleteUserImage(crop.Url);
             }
         }
 

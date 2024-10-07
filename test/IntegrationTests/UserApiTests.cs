@@ -22,6 +22,50 @@ public class UserApiTests(ApiWebApplicationFactory<Program> factory) : IClassFix
     };
 
     [Fact]
+    public async Task Create_user_update_profile_image_and_delete_user_all_responses_should_be_created()
+    {
+        // Arrange
+        var userCreateRequestGenerator = new Faker<UserCreateRequest>()
+            .StrictMode(true)
+            .RuleFor(x => x.Firstname, f => f.Person.FirstName)
+            .RuleFor(x => x.Lastname, f => f.Person.LastName)
+            .RuleFor(x => x.Nickname, f => f.Person.UserName)
+            .RuleFor(x => x.PreferNicknameOverName, f => f.Random.Bool())
+            .RuleFor(x => x.CmsAdminAccess, f => false)
+            .RuleFor(x => x.Abouth, f => f.Lorem.Sentence())
+            .RuleFor(x => x.Email, f => f.Person.Email)
+            .RuleFor(x => x.RoleHistory, f => [])
+            .RuleFor(x => x.MembershipHistory, f => []);
+
+        var userCreateRequest = userCreateRequestGenerator.Generate();
+
+        using var imageStream = File.OpenRead("./Assets/image.png");
+        var userUpdateProfileImageRequestGenerator = new MultipartFormDataContent
+        {
+            { new StreamContent(imageStream), "profileImage", "profileImage.jpg" }
+        };
+
+        // Act
+
+        var createResponse = await _client.PostAsJsonAsync("user", userCreateRequest);
+
+        var createContent = await createResponse.Content.ReadFromJsonAsync<BaseCreateResponse>();
+
+        var updateProfileImageResponse = await _client.PutAsync($"user/{createContent!.Id}/profile-image", userUpdateProfileImageRequestGenerator);
+
+        var deleteResponse = await _client.DeleteAsync($"user/{createContent!.Id}");
+
+        // Assert
+        createResponse.StatusCode.Should().Be(HttpStatusCode.Created);
+        createContent.Should().NotBeNull();
+        createContent!.Id.Should().NotBeEmpty();
+
+        updateProfileImageResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
+
+        deleteResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
+    }
+
+    [Fact]
     public async Task CRUD_user_without_admin_access_and_all_responses_should_be_created()
     {
         // Arrange

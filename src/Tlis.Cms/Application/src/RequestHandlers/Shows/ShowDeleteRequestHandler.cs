@@ -8,7 +8,7 @@ using Tlis.Cms.Infrastructure.Services.Interfaces;
 namespace Tlis.Cms.Application.RequestHandlers.Shows;
 
 internal sealed class ShowDeleteRequestHandler(
-    IStorageService storageService,
+    ICloudeStorageService storageService,
     IUnitOfWork unitOfWork)
     : IRequestHandler<ShowDeleteRequest, bool>
 {
@@ -29,11 +29,11 @@ internal sealed class ShowDeleteRequestHandler(
 
         if (show.ProfileImage is not null)
         {
-            await storageService.DeleteImage(show.ProfileImage.Url);
+            await storageService.DeleteShowImage(show.ProfileImage.FileName);
 
             foreach (var crop in show.ProfileImage.Crops)
             {
-                await storageService.DeleteImage(crop.Url);
+                await storageService.DeleteShowImage(crop.Url);
             }
         }
 

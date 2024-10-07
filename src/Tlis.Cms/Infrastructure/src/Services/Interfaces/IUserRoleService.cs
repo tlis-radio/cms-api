@@ -4,7 +4,7 @@ using Tlis.Cms.Domain.Entities;
 
 namespace Tlis.Cms.Infrastructure.Services.Interfaces;
 
-public interface IRoleService
+public interface IUserRoleService
 {
     Task<Role?> GetByIdAsync(Guid id);
 }

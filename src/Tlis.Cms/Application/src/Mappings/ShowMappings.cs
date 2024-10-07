@@ -19,7 +19,7 @@ public static class ShowMappings
             Description = entity.Description,
             CreatedDate = entity.CreatedDate,
             ModeratorNames = entity.Moderators.Select(x => $"{x.Firstname} {x.Lastname}").ToList(),
-            ProfileImageUrl = entity.ProfileImage?.Url
+            ProfileImageUrl = entity.ProfileImage?.FileName
         };
     }
 
@@ -42,7 +42,7 @@ public static class ShowMappings
             ProfileImage = entity.ProfileImage is null ? null : new ShowDetailsGetResponseImage
             {
                 Id = entity.ProfileImage.Id,
-                Url = entity.ProfileImage.Url
+                Url = entity.ProfileImage.FileName
             }
         };
 

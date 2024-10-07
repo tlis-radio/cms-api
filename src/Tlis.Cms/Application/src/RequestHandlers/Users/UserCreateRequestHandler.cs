@@ -14,7 +14,7 @@ namespace Tlis.Cms.Application.RequestHandlers.Users;
 
 internal sealed class UserCreateRequestHandler(
     IAuthProviderManagementService authProviderManagementService,
-    IRoleService roleService,
+    IUserRoleService roleService,
     IUnitOfWork unitOfWork) : IRequestHandler<UserCreateRequest, BaseCreateResponse>
 {
     public async Task<BaseCreateResponse> Handle(UserCreateRequest request, CancellationToken cancellationToken)

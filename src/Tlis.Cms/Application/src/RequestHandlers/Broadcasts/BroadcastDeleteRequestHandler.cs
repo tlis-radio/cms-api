@@ -8,7 +8,7 @@ using Tlis.Cms.Infrastructure.Services.Interfaces;
 namespace Tlis.Cms.Application.RequestHandlers.Broadcasts;
 
 internal sealed class BroadcastDeleteRequestHandler(
-    IStorageService storageService,
+    ICloudeStorageService storageService,
     IUnitOfWork unitOfWork) : IRequestHandler<BroadcastDeleteRequest, bool>
 {
     public async Task<bool> Handle(BroadcastDeleteRequest request, CancellationToken cancellationToken)
@@ -28,11 +28,11 @@ internal sealed class BroadcastDeleteRequestHandler(
 
         if (broadcast.Image is not null)
         {
-            await storageService.DeleteImage(broadcast.Image.Url);
+            await storageService.DeleteBroadcastImage(broadcast.Image.FileName);
 
             foreach (var crop in broadcast.Image.Crops)
             {
-                await storageService.DeleteImage(crop.Url);
+                await storageService.DeleteBroadcastImage(crop.Url);
             }
         }
 

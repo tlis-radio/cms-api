@@ -14,9 +14,9 @@ using Tlis.Cms.Infrastructure.Services.Interfaces;
 namespace Tlis.Cms.Infrastructure.Services;
 
 internal sealed class AuthProviderManagementService(
-    ITokenProviderService tokenProviderService,
+    IAuthProviderTokenService tokenProviderService,
     HttpClient httpClient,
-    IOptions<Auth0Configuration> configuration)
+    IOptions<AuthProviderConfiguration> configuration)
     : IAuthProviderManagementService
 {
     private readonly IManagementConnection _managementConnection = new HttpClientManagementConnection(httpClient);
@@ -85,5 +85,5 @@ internal sealed class AuthProviderManagementService(
     }
 
     private async ValueTask<IManagementApiClient> GetApiClient() =>
-        new ManagementApiClient(await tokenProviderService.GetAuth0AccessToken(), _domain, _managementConnection);
+        new ManagementApiClient(await tokenProviderService.GetAccessTokenAsync(), _domain, _managementConnection);
 }

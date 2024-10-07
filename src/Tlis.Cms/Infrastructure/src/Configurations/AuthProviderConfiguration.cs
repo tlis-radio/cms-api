@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Tlis.Cms.Infrastructure.Configurations;
 
-internal sealed class Auth0Configuration
+internal sealed class AuthProviderConfiguration
 {
     [Required]
     public required string Domain { get; set; }

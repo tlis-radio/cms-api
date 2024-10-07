@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Drawing;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -6,40 +7,53 @@ using Tlis.Cms.Application.Configurations;
 using Tlis.Cms.Application.Services.Interfaces;
 using Tlis.Cms.Infrastructure.Services.Interfaces;
 using Tlis.Cms.Domain.Entities.Images;
+using Tlis.Cms.Domain.Constants;
 
 namespace Tlis.Cms.Application.Services;
 
 internal sealed class ImageProcessingService(
-    IStorageService storageService,
+    ICloudeStorageService storageService,
     IImageService imageService)
     : IImageProcessingService
 {
-    public async Task<Image> CreateImageAsync(IFormFile image, ImageFormatConfiguration format)
+    public async Task<Image> ProcessImageAsync(IFormFile image, ImageType imageType, ImageFormatConfiguration format)
     {
-        using var originalImageStream = image.OpenReadStream();
         var originalImageId = Guid.NewGuid();
         var cropImageId = Guid.NewGuid();
 
-        var (
-            originalImage,
-            originalFileSize,
-            originalImageSize,
-            originalImageWebpUrl
-        ) = await ProcessOriginalImageAsync(image, originalImageId);
+        var (originalImage, originalFileSize, originalImageSize) = ProcessOriginalImage(image, originalImageId);
 
         using (originalImage)
         {
-            var (
-                croppedFileSize,
-                croppedWebpUrl
-            ) = await CropImageAsync(originalImage, originalImageSize, format, cropImageId);
+            using var originalImageStream = image.OpenReadStream();
+            using var croppedImageStream = CropImage(originalImage, originalImageSize, format, cropImageId);
+
+            string originalWebpUrl = string.Empty;
+            string croppedWebpUrl = string.Empty;
+            switch (imageType)
+            {
+                case ImageType.User:
+                    originalWebpUrl = await storageService.UploadUserImage(originalImageStream, originalImageId);
+                    croppedWebpUrl = await storageService.UploadUserImage(croppedImageStream, cropImageId);
+                    break;
+                case ImageType.Show:
+                    originalWebpUrl = await storageService.UploadShowImage(originalImageStream, originalImageId);
+                    croppedWebpUrl = await storageService.UploadShowImage(croppedImageStream, cropImageId);
+                    break;
+                case ImageType.Broadcast:
+                    originalWebpUrl = await storageService.UploadBroadcastImage(originalImageStream, originalImageId);
+                    croppedWebpUrl = await storageService.UploadBroadcastImage(croppedImageStream, cropImageId);
+                    break;
+                default:
+                    throw new NotImplementedException(nameof(imageType));
+            }
 
             return new Image
             {
                 Id = originalImageId,
                 Width = originalImageSize.Width,
                 Height = originalImageSize.Height,
-                Url = originalImageWebpUrl,
+                FileName = originalWebpUrl,
                 Size = originalFileSize,
                 Crops = [
                     new Crop
@@ -47,7 +61,7 @@ internal sealed class ImageProcessingService(
                         Id = cropImageId,
                         Height = format.Height,
                         Width = format.Width,
-                        Size = croppedFileSize,
+                        Size = croppedImageStream.Length,
                         Url = croppedWebpUrl
                     }
                 ]
@@ -55,19 +69,18 @@ internal sealed class ImageProcessingService(
         }
     }
 
-    public async Task<(NetVips.Image image, long fileSize, Size imageSize, string url)> ProcessOriginalImageAsync(IFormFile imageFile, Guid imageId)
+    private (NetVips.Image image, long fileSize, Size imageSize) ProcessOriginalImage(IFormFile imageFile, Guid imageId)
     {
         using var imageStream = imageFile.OpenReadStream();
 
         var image = imageService.ToImage(imageStream);
         var imageSize = imageService.GetSize(image);
         using var webp = imageService.ToWebp(image);
-        var webpUrl = await storageService.UploadImage(webp, imageId);
 
-        return new (image, webp.Length, imageSize, webpUrl);
+        return new (image, webp.Length, imageSize);
     }
 
-    public async Task<(long fileSize, string url)> CropImageAsync(NetVips.Image originalImage, Size originalImageSize, ImageFormatConfiguration configuration, Guid imageId)
+    private Stream CropImage(NetVips.Image originalImage, Size originalImageSize, ImageFormatConfiguration configuration, Guid imageId)
     {
         using var croppedImage = imageService.Crop(
             originalImage,
@@ -81,10 +94,6 @@ internal sealed class ImageProcessingService(
             configuration.Width,
             configuration.Height);
 
-        using var webp = imageService.ToWebp(resizedCroppedImage);
-        
-        var webpUrl = await storageService.UploadImage(webp, imageId);
-
-        return (webp.Length, webpUrl);
+        return imageService.ToWebp(resizedCroppedImage);
     }
 }

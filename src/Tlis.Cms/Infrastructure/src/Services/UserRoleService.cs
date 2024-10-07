@@ -6,20 +6,25 @@ using Tlis.Cms.Domain.Entities;
 
 namespace Tlis.Cms.Infrastructure.Services;
 
-public class RoleService(IUnitOfWork unitOfWork, ICacheService cacheService) : IRoleService
+public class RoleService(IUnitOfWork unitOfWork, ICacheService cacheService) : IUserRoleService
 {
     public async Task<Role?> GetByIdAsync(Guid id)
     {
         var cacheKey = CreateRoleCacheKey(id);
-        if (cacheService.TryGetValue<Role>(cacheKey, out var role) is false)
-        {
-            role = await unitOfWork.RoleRepository.GetByIdAsync(id, asTracking: false);
-            if (role is null)
-                return null;
 
-            cacheService.Set(cacheKey, role);
+        if (cacheService.TryGetValue<Role>(cacheKey, out var role))
+        {
             return role;
         }
+
+        role = await unitOfWork.RoleRepository.GetByIdAsync(id, asTracking: false);
+
+        if (role is null)
+        {
+            return null;
+        }
+
+        cacheService.Set(cacheKey, role);
 
         return role;
     }

@@ -10,18 +10,18 @@ using Tlis.Cms.Infrastructure.Services.Interfaces;
 
 namespace Tlis.Cms.Infrastructure.Services;
 
-internal sealed class TokenProviderService(
+internal sealed class AuthProviderTokenService(
     HttpClient httpClient,
-    IOptions<Auth0Configuration> configuration,
-    IMemoryCache memoryCache) : ITokenProviderService
+    IOptions<AuthProviderConfiguration> configuration,
+    IMemoryCache memoryCache) : IAuthProviderTokenService
 {
     private readonly IAuthenticationConnection _connection = new HttpClientAuthenticationConnection(httpClient);
 
-    private readonly Auth0Configuration _configuration = configuration.Value;
+    private readonly AuthProviderConfiguration _configuration = configuration.Value;
 
     private const string Auth0AccessTokenKey = "AUTH0_ACCESS_TOKEN_KEY";
 
-    public async ValueTask<string> GetAuth0AccessToken(bool force = false)
+    public async ValueTask<string> GetAccessTokenAsync(bool force = false)
     {
         if (force is false && memoryCache.TryGetValue<string>(Auth0AccessTokenKey, out var accessToken))
         {
