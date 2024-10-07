@@ -9,7 +9,7 @@ WORKDIR /App/Tlis.Cms.Cli/src
 RUN dotnet publish -c Release -o out
 
 # Build Runtime Image
-FROM alpine:3.20
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /App
 
 COPY --from=build-env /App/Tlis.Cms.Cli/src/out .
