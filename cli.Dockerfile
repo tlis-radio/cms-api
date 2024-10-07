@@ -13,3 +13,5 @@ FROM alpine:3.20
 WORKDIR /App
 
 COPY --from=build-env /App/Tlis.Cms.Cli/src/out .
+
+ENTRYPOINT [ "dotnet", "Tlis.Cms.Cli.dll" ]
