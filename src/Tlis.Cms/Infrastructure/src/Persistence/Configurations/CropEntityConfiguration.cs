@@ -14,7 +14,7 @@ public class CropEntityConfiguration : IEntityTypeConfiguration<Crop>
 
         builder.Property(x => x.Width).IsRequired();
         builder.Property(x => x.Height).IsRequired();
-        builder.Property(x => x.Url).IsRequired();
+        builder.Property(x => x.FileName).IsRequired();
         builder.Property(x => x.Size).IsRequired();
 
         builder.HasIndex(x => x.ImageId);

@@ -30,16 +30,16 @@ internal sealed class UserDeleteRequestHandler(
 
         if (string.IsNullOrEmpty(user.ExternalId) is false)
         {
-            await authProviderManagementService.DeleteUser(user.ExternalId);
+            await authProviderManagementService.DeleteUserAsync(user.ExternalId);
         }
 
         if (user.ProfileImage is not null)
         {
-            await storageService.DeleteUserImage(user.ProfileImage.FileName);
+            await storageService.DeleteUserImageAsync(user.ProfileImage.FileName);
 
             foreach (var crop in user.ProfileImage.Crops)
             {
-                await storageService.DeleteUserImage(crop.Url);
+                await storageService.DeleteUserImageAsync(crop.FileName);
             }
         }
 

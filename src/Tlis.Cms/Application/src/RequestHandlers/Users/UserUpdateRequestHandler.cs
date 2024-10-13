@@ -33,7 +33,7 @@ internal sealed class UserUpdateRequestHandler(
 
         if (user.CmsAdminAccess && request.CmsAdminAccess is false && user.ExternalId is not null)
         {
-            await authProviderManagementService.DeleteUser(user.ExternalId);
+            await authProviderManagementService.DeleteUserAsync(user.ExternalId);
             user.ExternalId = null;
         }
 
@@ -42,7 +42,7 @@ internal sealed class UserUpdateRequestHandler(
             var roleIds = request.RoleHistory.Select(x => x.RoleId);
             var roles = await unitOfWork.RoleRepository.GetByIdsAsync(roleIds, asTracking: false);
 
-            user.ExternalId = await authProviderManagementService.CreateUser(
+            user.ExternalId = await authProviderManagementService.CreateUserAsync(
                 request.Email,
                 roles.Select(x => x.ExternalId).ToArray());
         }
@@ -52,7 +52,7 @@ internal sealed class UserUpdateRequestHandler(
             var roleIds = request.RoleHistory.Select(x => x.RoleId);
             var roles = await unitOfWork.RoleRepository.GetByIdsAsync(roleIds, asTracking: false);
 
-            await authProviderManagementService.UpdateUserRoles(user.ExternalId, roles.Select(x => x.ExternalId).ToArray());
+            await authProviderManagementService.UpdateUserRolesAsync(user.ExternalId, roles.Select(x => x.ExternalId).ToArray());
         }
 
         user.Firstname = request.Firstname;

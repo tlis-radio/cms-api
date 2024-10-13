@@ -29,11 +29,11 @@ internal sealed class ShowDeleteRequestHandler(
 
         if (show.ProfileImage is not null)
         {
-            await storageService.DeleteShowImage(show.ProfileImage.FileName);
+            await storageService.DeleteShowImageAsync(show.ProfileImage.FileName);
 
             foreach (var crop in show.ProfileImage.Crops)
             {
-                await storageService.DeleteShowImage(crop.Url);
+                await storageService.DeleteShowImageAsync(crop.FileName);
             }
         }
 

@@ -14,7 +14,18 @@ public static class DependencyInjection
 {
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        // TODO: oddelit
+        services.AddCloudeStorageService(configuration);
+        services.AddAuthProviderManagementService(configuration);
+
+        services.AddDbContext(configuration);
+        services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+        services.AddScoped<ICacheService, CacheService>();
+        services.AddScoped<IUserRoleService, RoleService>();
+    }
+
+    public static void AddCloudeStorageService(this IServiceCollection services, IConfiguration configuration)
+    {
         services
             .AddOptions<CloudStorageConfiguration>()
             .Bind(configuration.GetSection("CloudStorage"))
@@ -22,16 +33,6 @@ public static class DependencyInjection
             .ValidateOnStart();
 
         services.AddSingleton<ICloudeStorageService, CloudStorageService>();
-
-        //---
-
-        services.AddDbContext(configuration);
-        services.AddTransient<IUnitOfWork, UnitOfWork>();
-
-        services.AddScoped<ICacheService, CacheService>();
-        services.AddScoped<IUserRoleService, RoleService>();
-
-        services.AddAuthProviderManagementService(configuration);
     }
 
     public static void AddAuthProviderManagementService(this IServiceCollection services, IConfiguration configuration)
@@ -43,7 +44,7 @@ public static class DependencyInjection
             .ValidateOnStart();
 
         services.AddHttpClient<IAuthProviderTokenService, AuthProviderTokenService>();
-        services.AddScoped<IAuthProviderManagementService, AuthProviderManagementService>();
+        services.AddHttpClient<IAuthProviderManagementService, AuthProviderManagementService>();
     }
 
     public static void AddDbContext(this IServiceCollection services, IConfiguration configuration)

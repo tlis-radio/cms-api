@@ -20,7 +20,7 @@ public class CreateRolesCommand(
     protected override async Task TryHandleCommand()
     {
 
-        var authRoles = await authProviderManagementService.GetAllRoles();
+        var authRoles = await authProviderManagementService.GetAllRolesAsync();
 
         var roleEntites = new[]
         {

@@ -6,15 +6,15 @@ namespace Tlis.Cms.Infrastructure.Services.Interfaces;
 
 public interface ICloudeStorageService
 {
-    Task<bool> DeleteUserImage(string fileUrl);
+    Task<bool> DeleteUserImageAsync(string fileUrl);
 
-    Task<string> UploadUserImage(Stream stream, Guid imageId);
+    Task<string> UploadUserImageAsync(Stream stream, Guid imageId);
 
-    Task<bool> DeleteShowImage(string fileUrl);
+    Task<bool> DeleteShowImageAsync(string fileUrl);
 
-    Task<string> UploadShowImage(Stream stream, Guid imageId);
+    Task<string> UploadShowImageAsync(Stream stream, Guid imageId);
 
-    Task<bool> DeleteBroadcastImage(string fileUrl);
+    Task<bool> DeleteBroadcastImageAsync(string fileUrl);
 
-    Task<string> UploadBroadcastImage(Stream stream, Guid imageId);
+    Task<string> UploadBroadcastImageAsync(Stream stream, Guid imageId);
 }

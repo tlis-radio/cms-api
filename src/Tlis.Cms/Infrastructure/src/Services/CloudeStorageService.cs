@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
@@ -29,29 +28,29 @@ internal sealed class CloudStorageService(
         cloudeStorageConfiguration.Value.Authentication.ConnectionString,
         cloudeStorageConfiguration.Value.Cdn.Folders.BroadcastImages);
     
-    public Task<bool> DeleteUserImage(string fileUrl)
-        => DeleteFile(_userImagesContainerClient, fileUrl);
+    public Task<bool> DeleteUserImageAsync(string fileName)
+        => DeleteFileAsync(_userImagesContainerClient, fileName);
 
-    public Task<string> UploadUserImage(Stream stream, Guid imageId)
-        => UploadImage(_userImagesContainerClient, stream, imageId);
+    public Task<string> UploadUserImageAsync(Stream stream, Guid imageId)
+        => UploadImageAsync(_userImagesContainerClient, stream, imageId);
 
-    public Task<bool> DeleteShowImage(string fileUrl)
-        => DeleteFile(_showImagesContainerClient, fileUrl);
+    public Task<bool> DeleteShowImageAsync(string fileName)
+        => DeleteFileAsync(_showImagesContainerClient, fileName);
 
-    public Task<string> UploadShowImage(Stream stream, Guid imageId)
-        => UploadImage(_showImagesContainerClient, stream, imageId);
+    public Task<string> UploadShowImageAsync(Stream stream, Guid imageId)
+        => UploadImageAsync(_showImagesContainerClient, stream, imageId);
 
-    public Task<bool> DeleteBroadcastImage(string fileUrl)
-        => DeleteFile(_broadcastImagesContainerClient, fileUrl);
+    public Task<bool> DeleteBroadcastImageAsync(string fileName)
+        => DeleteFileAsync(_broadcastImagesContainerClient, fileName);
 
-    public Task<string> UploadBroadcastImage(Stream stream, Guid imageId)
-        => UploadImage(_broadcastImagesContainerClient, stream, imageId);
+    public Task<string> UploadBroadcastImageAsync(Stream stream, Guid imageId)
+        => UploadImageAsync(_broadcastImagesContainerClient, stream, imageId);
 
-    private async Task<bool> DeleteFile(BlobContainerClient client, string fileUrl)
+    private async Task<bool> DeleteFileAsync(BlobContainerClient client, string fileName)
     {
         try
         {
-            var response = await client.DeleteBlobAsync(fileUrl.Split('/').Last());
+            var response = await client.DeleteBlobAsync(fileName);
 
             return response.Status == 202;
         }
@@ -62,7 +61,7 @@ internal sealed class CloudStorageService(
         }
     }
 
-    private static async Task<string> UploadImage(BlobContainerClient client, Stream stream, Guid imageId)
+    private static async Task<string> UploadImageAsync(BlobContainerClient client, Stream stream, Guid imageId)
     {
         var storageFileName = GetStorageFileName(imageId, ImageFormat.WEBP);
         var blob = client.GetBlobClient(storageFileName);

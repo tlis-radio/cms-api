@@ -33,16 +33,16 @@ internal sealed class ImageProcessingService(
             switch (imageType)
             {
                 case ImageType.User:
-                    originalWebpUrl = await storageService.UploadUserImage(originalImageStream, originalImageId);
-                    croppedWebpUrl = await storageService.UploadUserImage(croppedImageStream, cropImageId);
+                    originalWebpUrl = await storageService.UploadUserImageAsync(originalImageStream, originalImageId);
+                    croppedWebpUrl = await storageService.UploadUserImageAsync(croppedImageStream, cropImageId);
                     break;
                 case ImageType.Show:
-                    originalWebpUrl = await storageService.UploadShowImage(originalImageStream, originalImageId);
-                    croppedWebpUrl = await storageService.UploadShowImage(croppedImageStream, cropImageId);
+                    originalWebpUrl = await storageService.UploadShowImageAsync(originalImageStream, originalImageId);
+                    croppedWebpUrl = await storageService.UploadShowImageAsync(croppedImageStream, cropImageId);
                     break;
                 case ImageType.Broadcast:
-                    originalWebpUrl = await storageService.UploadBroadcastImage(originalImageStream, originalImageId);
-                    croppedWebpUrl = await storageService.UploadBroadcastImage(croppedImageStream, cropImageId);
+                    originalWebpUrl = await storageService.UploadBroadcastImageAsync(originalImageStream, originalImageId);
+                    croppedWebpUrl = await storageService.UploadBroadcastImageAsync(croppedImageStream, cropImageId);
                     break;
                 default:
                     throw new NotImplementedException(nameof(imageType));
@@ -62,7 +62,7 @@ internal sealed class ImageProcessingService(
                         Height = format.Height,
                         Width = format.Width,
                         Size = croppedImageStream.Length,
-                        Url = croppedWebpUrl
+                        FileName = croppedWebpUrl
                     }
                 ]
             };

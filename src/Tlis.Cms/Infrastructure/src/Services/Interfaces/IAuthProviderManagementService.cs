@@ -6,11 +6,11 @@ namespace Tlis.Cms.Infrastructure.Services.Interfaces;
 
 public interface IAuthProviderManagementService
 {
-    ValueTask<string> CreateUser(string email, string[] roleIds);
+    ValueTask<string> CreateUserAsync(string email, string[] roleIds);
 
-    ValueTask UpdateUserRoles(string id, string[] roleIds);
+    ValueTask UpdateUserRolesAsync(string id, string[] roleIds);
 
-    Task<List<Role>> GetAllRoles();
+    Task<List<Role>> GetAllRolesAsync();
 
-    Task DeleteUser(string id);
+    Task DeleteUserAsync(string id);
 }

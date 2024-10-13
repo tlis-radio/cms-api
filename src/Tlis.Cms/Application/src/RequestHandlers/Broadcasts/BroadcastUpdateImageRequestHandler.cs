@@ -30,11 +30,11 @@ internal sealed class BroadcastUpdateImageRequestHandler(
 
         if (broadcast.Image is not null)
         {
-            await storageService.DeleteBroadcastImage(broadcast.Image.FileName);
+            await storageService.DeleteBroadcastImageAsync(broadcast.Image.FileName);
 
             foreach (var crop in broadcast.Image.Crops)
             {
-                await storageService.DeleteBroadcastImage(crop.Url);
+                await storageService.DeleteBroadcastImageAsync(crop.FileName);
             }
         }
 

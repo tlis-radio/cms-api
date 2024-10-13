@@ -23,11 +23,11 @@ internal sealed class AuthProviderManagementService(
 
     private readonly string _domain = configuration.Value.Domain;
 
-    public async ValueTask<string> CreateUser(string email, string[] roleIds)
+    public async ValueTask<string> CreateUserAsync(string email, string[] roleIds)
     {
         try
         {
-            using var client = await GetApiClient();
+            using var client = await GetApiClientAsync();
 
             var response = await client.Users.CreateAsync(
                 new UserCreateRequest
@@ -58,32 +58,31 @@ internal sealed class AuthProviderManagementService(
         }
     }
 
-    public async ValueTask UpdateUserRoles(string id, string[] roleIds)
+    public async ValueTask UpdateUserRolesAsync(string id, string[] roleIds)
     {
-        using var client = await GetApiClient();
+        using var client = await GetApiClientAsync();
 
         await client.Users.AssignRolesAsync(
             id,
             new AssignRolesRequest { Roles = roleIds });
     }
 
-
-    public async Task DeleteUser(string id)
+    public async Task DeleteUserAsync(string id)
     {
-        using var client = await GetApiClient();
+        using var client = await GetApiClientAsync();
 
         await client.Users.DeleteAsync(id);
     }
 
-    public async Task<List<Role>> GetAllRoles()
+    public async Task<List<Role>> GetAllRolesAsync()
     {
-        using var client = await GetApiClient();
+        using var client = await GetApiClientAsync();
 
         var response = await client.Roles.GetAllAsync(new GetRolesRequest());
 
         return [.. response];
     }
 
-    private async ValueTask<IManagementApiClient> GetApiClient() =>
+    private async ValueTask<IManagementApiClient> GetApiClientAsync() =>
         new ManagementApiClient(await tokenProviderService.GetAccessTokenAsync(), _domain, _managementConnection);
 }

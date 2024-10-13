@@ -55,7 +55,7 @@ internal sealed class UserCreateRequestHandler(
 
         if (!string.IsNullOrEmpty(request.Email) && request.CmsAdminAccess)
         {
-            newUser.ExternalId = await authProviderManagementService.CreateUser(
+            newUser.ExternalId = await authProviderManagementService.CreateUserAsync(
                 request.Email,
                 roles.Select(x => x.ExternalId).ToArray());
         }
