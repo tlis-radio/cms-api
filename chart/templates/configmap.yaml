@@ -22,10 +22,10 @@ data:
             "Authority": {{ .Values.config.jwt.authority | quote }},
             "RequireHttpsMetadata": {{ .Values.config.jwt.requireHttpsMetadata }}
         },
-        "Auth0": {
-            "Domain": {{ .Values.config.auth0.domain | quote }},
-            "ClientId": {{ .Values.config.auth0.clientId | quote }},
-            "ClientSecret": {{ .Values.config.auth0.clientSecret | quote }}
+        "AuthProvider": {
+            "Domain": {{ .Values.config.authProvider.domain | quote }},
+            "ClientId": {{ .Values.config.authProvider.clientId | quote }},
+            "ClientSecret": {{ .Values.config.authProvider.clientSecret | quote }}
         },
         "CloudStorage": {
             "Cdn": {
@@ -51,9 +51,9 @@ data:
         "ConnectionStrings": {
             "Postgres": {{ .Values.config.connectionStrings.postgres | quote }}
         },
-        "Auth0": {
-            "Domain": {{ .Values.config.auth0.domain | quote }},
-            "ClientId": {{ .Values.config.auth0.clientId | quote }},
-            "ClientSecret": {{ .Values.config.auth0.clientSecret | quote }}
+        "AuthProvider": {
+            "Domain": {{ .Values.config.authProvider.domain | quote }},
+            "ClientId": {{ .Values.config.authProvider.clientId | quote }},
+            "ClientSecret": {{ .Values.config.authProvider.clientSecret | quote }}
         }
     }
