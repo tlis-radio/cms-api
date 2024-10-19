@@ -8,6 +8,7 @@ using Tlis.Cms.Api.Constants;
 using Tlis.Cms.Application.Contracts.Api.Requests.Broadcasts;
 using Tlis.Cms.Application.Contracts.Api.Responses;
 using Tlis.Cms.Application.Contracts.Api.Responses.BroadcastDetailsGetResponses;
+using Tlis.Cms.Application.Contracts.Api.Responses.BroadcastGetInDateRangeResponses;
 
 namespace Tlis.Cms.Api.Controllers;
 
@@ -15,14 +16,20 @@ namespace Tlis.Cms.Api.Controllers;
 [Route("[controller]")]
 public sealed class BroadcastController(IMediator mediator) : ControllerBase
 {
-    // [HttpGet("/all")]
-    // [AllowAnonymous]
-    // [Produces(MediaTypeNames.Application.Json)]
-    // [ProducesResponseType(typeof(), StatusCodes.Status200OK)]
-    // [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-    // [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    // public ValueTask<ActionResult<>> GetBroadcastInDateRange([FromRoute] DateTime From, [FromRoute] DateTime To)
-    //     => HandleGet();
+    [HttpGet("in-date-range/{from:datetime}/{to:datetime}")]
+    [AllowAnonymous]
+    [Produces(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(typeof(BroadcastGetInDateRangeResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    public async ValueTask<ActionResult<BroadcastGetInDateRangeResponse>> GetBroadcastInDateRange([FromRoute] DateTime from, [FromRoute] DateTime to)
+    {
+        var response = await mediator.Send(new BroadcastGetInDateRangeRequest { From = from, To = to });
+
+        return response is null
+            ? NotFound()
+            : Ok(response);
+    }
 
     [HttpGet("{id:guid}")]
     [AllowAnonymous]

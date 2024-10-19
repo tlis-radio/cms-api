@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +12,15 @@ namespace Tlis.Cms.Infrastructure.Persistence.Repositories;
 internal sealed class BroadcastRepository(CmsDbContext dbContext)
     : GenericRepository<Broadcast>(dbContext), IBroadcastRepository
 {
+    public async Task<List<Broadcast>> GetInDateRangeAsync(DateTime from, DateTime to)
+    {
+        var query = ConfigureTracking(DbSet.AsQueryable(), false);
+
+        query = query.Where(b => b.StartDate >= from && b.EndDate <= to);
+
+        return await query.ToListAsync();
+    }
+
     public async Task<PaginationDto<Broadcast>> PaginationAsync(int limit, int pageNumber)
     {
         var queryGetTotalCount = await ConfigureTracking(DbSet.AsQueryable(), false).CountAsync();

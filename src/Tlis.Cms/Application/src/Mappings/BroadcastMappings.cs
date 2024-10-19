@@ -2,6 +2,7 @@ using System;
 using Tlis.Cms.Application.Contracts.Api.Requests.Broadcasts;
 using Tlis.Cms.Application.Contracts.Api.Responses;
 using Tlis.Cms.Application.Contracts.Api.Responses.BroadcastDetailsGetResponses;
+using Tlis.Cms.Application.Contracts.Api.Responses.BroadcastGetInDateRangeResponses;
 using Tlis.Cms.Domain.Entities;
 
 namespace Tlis.Cms.Application.Mappings;
@@ -19,6 +20,32 @@ public static class BroadcastMappings
             EndDate = request.EndDate,
             ShowId = request.ShowId
         };
+    }
+
+    public static BroadcastGetInDateRangeResponseBroadcast MapToBroadcastGetInDateRangeResponse(Broadcast entity)
+    {
+        ArgumentNullException.ThrowIfNull(entity.Show);
+
+        var response =  new BroadcastGetInDateRangeResponseBroadcast
+        {
+            Id = entity.Id,
+            Name = entity.Name,
+            Description = entity.Description,
+            StartDate = entity.StartDate,
+            EndDate = entity.EndDate,
+            Show = new BroadcastGetInDateRangeResponseBroadcastShow
+            {
+                Id = entity.Show.Id,
+                Name = entity.Show.Name
+            },
+            Image = entity.Image is null ? null : new BroadcastGetInDateRangeResponseBroadcastImage
+            {
+                Id = entity.Image.Id,
+                Url = entity.Image?.FileName ?? string.Empty
+            }
+        };
+
+        return response;
     }
 
     public static BroadcastDetailsGetResponse? MapToBroadcastDetailsGetResponse(Broadcast? entity)
