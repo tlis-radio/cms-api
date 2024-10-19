@@ -14,7 +14,7 @@ namespace Tlis.Cms.Api.Controllers;
 public sealed class MembershipController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
-    // [Authorize(Policy.UserRead)]
+    [Authorize(Policy.UserRead)]
     [SwaggerOperation("Get all membership statuses")]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(MembershipStatusGetAllResponse), StatusCodes.Status200OK)]

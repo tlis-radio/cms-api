@@ -58,7 +58,7 @@ public sealed class BroadcastController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost]
-    // [Authorize(Policy.BroadcastWrite)]
+    [Authorize(Policy.BroadcastWrite)]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
@@ -75,7 +75,7 @@ public sealed class BroadcastController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
-    // [Authorize(Policy.BroadcastWrite)]
+    [Authorize(Policy.BroadcastWrite)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -91,7 +91,7 @@ public sealed class BroadcastController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("{id:guid}/image")]
-    // [Authorize(Policy.BroadcastWrite)]
+    [Authorize(Policy.BroadcastWrite)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -105,7 +105,7 @@ public sealed class BroadcastController(IMediator mediator) : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
-    // [Authorize(Policy.BroadcastDelete)]
+    [Authorize(Policy.BroadcastDelete)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]

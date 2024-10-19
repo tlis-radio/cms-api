@@ -49,7 +49,7 @@ public sealed class ShowController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost]
-    // [Authorize(Policy.ShowWrite)]
+    [Authorize(Policy.ShowWrite)]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
@@ -66,7 +66,7 @@ public sealed class ShowController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
-    // [Authorize(Policy.ShowWrite)]
+    [Authorize(Policy.ShowWrite)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -82,7 +82,7 @@ public sealed class ShowController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("{id:guid}/profile-image")]
-    // [Authorize(Policy.ShowWrite)]
+    [Authorize(Policy.ShowWrite)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -96,7 +96,7 @@ public sealed class ShowController(IMediator mediator) : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
-    // [Authorize(Policy.ShowDelete)]
+    [Authorize(Policy.ShowDelete)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]

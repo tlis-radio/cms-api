@@ -28,11 +28,8 @@ internal static class AuthorizationSetup
             .AddPolicy(Policy.ShowWrite, policy => policy.RequireClaim("permissions", "write:show"))
             .AddPolicy(Policy.ShowDelete, policy => policy.RequireClaim("permissions", "delete:show"))
             .AddPolicy(Policy.ShowRead, policy => policy.RequireClaim("permissions", "read:show"))
-            .AddPolicy(Policy.BroadcastWrite, policy => policy.RequireClaim("permissions", "write:program"))
-            .AddPolicy(Policy.BroadcastDelete, policy => policy.RequireClaim("permissions", "delete:program"))
-            .AddPolicy(Policy.BroadcastRead, policy => policy.RequireClaim("permissions", "read:program"))
-            .AddPolicy(Policy.ImageWrite, policy => policy.RequireClaim("permissions", "write:image"))
-            .AddPolicy(Policy.ImageDelete, policy => policy.RequireClaim("permissions", "delete:image"))
-            .AddPolicy(Policy.ImageRead, policy => policy.RequireClaim("permissions", "read:image"));
+            .AddPolicy(Policy.BroadcastWrite, policy => policy.RequireClaim("permissions", "write:broadcast"))
+            .AddPolicy(Policy.BroadcastDelete, policy => policy.RequireClaim("permissions", "delete:broadcast"))
+            .AddPolicy(Policy.BroadcastRead, policy => policy.RequireClaim("permissions", "read:broadcast"));
     }
 }

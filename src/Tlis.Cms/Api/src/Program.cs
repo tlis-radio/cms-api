@@ -39,7 +39,7 @@ public class Program
 
         builder.Services.ConfigureProblemDetails();
         builder.Services.ConfigureSwagger();
-        // builder.Services.ConfigureAuthorization(builder.Configuration);
+        builder.Services.ConfigureAuthorization(builder.Configuration);
 
         builder.Logging.ConfigureOtel(builder.Environment);
         builder.Services.ConfigureOtel(builder.Environment);

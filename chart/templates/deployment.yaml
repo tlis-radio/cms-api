@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: {{ .Release.Name }}
-          image: tliscr.azurecr.io/cms-management-api:{{ .Chart.AppVersion }}
+          image: tliscr.azurecr.io/cms-api:{{ .Chart.AppVersion }}
           imagePullPolicy: IfNotPresent
           volumeMounts:
           - mountPath: /app/appsettings.{{ .Values.environment }}.json
@@ -35,7 +35,7 @@ spec:
               value: otlp
       initContainers:
         - name: ef-migration
-          image: tliscr.azurecr.io/cms-management-api-cli:{{ .Chart.AppVersion }}
+          image: tliscr.azurecr.io/cms-api-cli:{{ .Chart.AppVersion }}
           args: ['migration']
           imagePullPolicy: IfNotPresent
           volumeMounts:

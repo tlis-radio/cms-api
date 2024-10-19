@@ -14,7 +14,7 @@ namespace Tlis.Cms.Api.Controllers;
 public sealed class RoleController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
-    // [Authorize(Policy.UserRead)]
+    [Authorize(Policy.UserRead)]
     [SwaggerOperation("Get all roles")]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(RoleGetAllResponse), StatusCodes.Status200OK)]

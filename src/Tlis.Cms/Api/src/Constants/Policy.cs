@@ -9,13 +9,6 @@ internal static class Policy
 
     public const string UserDelete = "UserDelete";
 
-    // Image
-    public const string ImageRead = "ImageRead";
-
-    public const string ImageWrite = "ImageWrite";
-
-    public const string ImageDelete = "ImageDelete";
-    
     // Show
     public const string ShowRead = "ShowRead";
 
