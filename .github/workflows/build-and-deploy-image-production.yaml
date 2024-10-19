@@ -1,8 +1,10 @@
-name: 'Build & Upload Dev Image'
+name: 'Build and deploy Image to Production'
 
 on:
-  workflow_dispatch:
-  pull_request:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+-beta.[0-9]+'
 
 jobs:
   build-api-container-and-push-to-acr:
@@ -10,9 +12,9 @@ jobs:
     with:
       azure-container-registry: ${{ vars.AZURE_CONTAINER_REGISTRY }}
       release-name: ${{ vars.RELEASE_NAME }}
-      image-version: ${{ github.sha }}
+      image-version: ${{ github.ref_name }}
       dockerfile: api.Dockerfile
-      environment: staging
+      environment: production
     secrets:
       container-registry-username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
       container-registry-password: ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
@@ -21,9 +23,9 @@ jobs:
     with:
       azure-container-registry: ${{ vars.AZURE_CONTAINER_REGISTRY }}
       release-name: ${{ vars.RELEASE_NAME }}-cli
-      image-version: ${{ github.sha }}
+      image-version: ${{ github.ref_name }}
       dockerfile: cli.Dockerfile
-      environment: staging
+      environment: production
     secrets:
       container-registry-username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
       container-registry-password: ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
@@ -32,8 +34,8 @@ jobs:
     with:
       azure-container-registry: ${{ vars.AZURE_CONTAINER_REGISTRY }}
       release-name: ${{ vars.RELEASE_NAME }}
-      image-version: ${{ github.sha }}
-      environment: staging
+      image-version: ${{ github.ref_name }}
+      environment: production
     secrets:
       container-registry-username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
       container-registry-password: ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
@@ -46,9 +48,9 @@ jobs:
       azure-container-registry: ${{ vars.AZURE_CONTAINER_REGISTRY }}
       chart-version: 1.0.0
       helm-k8s-context: tlis-k8s
-      helm-deployment-namespace: cms-staging
+      helm-deployment-namespace: cms-production
       release-name: ${{ vars.RELEASE_NAME }}
-      environment: staging
+      environment: production
     secrets:
       azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
       azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
