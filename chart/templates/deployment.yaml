@@ -42,6 +42,14 @@ spec:
           - mountPath: /app/appsettings.{{ .Values.environment }}.json
             name: config
             subPath: cli.appsettings.json
+        - name: create-roles
+          image: tliscr.azurecr.io/cms-api-cli:{{ .Chart.AppVersion }}
+          args: ['create-roles']
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+          - mountPath: /app/appsettings.{{ .Values.environment }}.json
+            name: config
+            subPath: cli.appsettings.json
       {{ if .Values.spec.imagePullSecrets }}
       imagePullSecrets:
         - name: {{ .Values.spec.imagePullSecrets | quote }}
