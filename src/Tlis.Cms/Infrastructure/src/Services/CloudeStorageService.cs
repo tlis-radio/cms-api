@@ -32,10 +32,10 @@ internal sealed class CloudStorageService(
         => fileName is null ? null : $"{_userImagesContainerClient.Uri.AbsoluteUri}/{fileName}";
 
     public string? GetShowImageUrl(string? fileName)
-        => $"{_showImagesContainerClient.Uri.AbsoluteUri}/{fileName}";
+        => fileName is null ? null : $"{_showImagesContainerClient.Uri.AbsoluteUri}/{fileName}";
 
     public string? GetBroadcastImageUrl(string? fileName)
-        => $"{_broadcastImagesContainerClient.Uri.AbsoluteUri}/{fileName}";
+        => fileName is null ? null : $"{_broadcastImagesContainerClient.Uri.AbsoluteUri}/{fileName}";
     
     public Task<bool> DeleteUserImageAsync(string fileName)
         => DeleteFileAsync(_userImagesContainerClient, fileName);

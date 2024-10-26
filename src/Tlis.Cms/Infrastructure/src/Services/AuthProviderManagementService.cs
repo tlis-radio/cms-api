@@ -40,9 +40,7 @@ internal sealed class AuthProviderManagementService(
             
             if (roleIds.Length > 0)
             {
-                await client.Users.AssignRolesAsync(
-                    response.UserId,
-                    new AssignRolesRequest { Roles = roleIds });
+                await client.Users.AssignRolesAsync(response.UserId, new AssignRolesRequest { Roles = roleIds });
             }
 
             return response.UserId;
@@ -62,9 +60,7 @@ internal sealed class AuthProviderManagementService(
     {
         using var client = await GetApiClientAsync();
 
-        await client.Users.AssignRolesAsync(
-            id,
-            new AssignRolesRequest { Roles = roleIds });
+        await client.Users.AssignRolesAsync(id, new AssignRolesRequest { Roles = roleIds });
     }
 
     public async Task DeleteUserAsync(string id)
@@ -80,7 +76,7 @@ internal sealed class AuthProviderManagementService(
 
         var response = await client.Roles.GetAllAsync(new GetRolesRequest());
 
-        return [.. response];
+        return [..response];
     }
 
     private async ValueTask<IManagementApiClient> GetApiClientAsync() =>
