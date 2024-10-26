@@ -16,6 +16,10 @@ internal sealed class BroadcastRepository(CmsDbContext dbContext)
     {
         var query = ConfigureTracking(DbSet.AsQueryable(), false);
 
+        query = query
+            .Include(x => x.Show)
+            .Include(x => x.Image);
+
         query = query.Where(b => b.StartDate >= from && b.EndDate <= to);
 
         return await query.ToListAsync();
