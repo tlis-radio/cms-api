@@ -22,7 +22,7 @@ public static class BroadcastMappings
         };
     }
 
-    public static BroadcastGetInDateRangeResponseBroadcast MapToBroadcastGetInDateRangeResponse(Broadcast entity)
+    public static BroadcastGetInDateRangeResponseBroadcast MapToBroadcastGetInDateRangeResponse(Broadcast entity, string? imageUrl)
     {
         ArgumentNullException.ThrowIfNull(entity.Show);
 
@@ -41,14 +41,14 @@ public static class BroadcastMappings
             Image = entity.Image is null ? null : new BroadcastGetInDateRangeResponseBroadcastImage
             {
                 Id = entity.Image.Id,
-                Url = entity.Image?.FileName ?? string.Empty
+                Url = imageUrl
             }
         };
 
         return response;
     }
 
-    public static BroadcastDetailsGetResponse? MapToBroadcastDetailsGetResponse(Broadcast? entity)
+    public static BroadcastDetailsGetResponse? MapToBroadcastDetailsGetResponse(Broadcast? entity, string? imageUrl)
     {
         if (entity is null)
         {
@@ -69,10 +69,10 @@ public static class BroadcastMappings
                 Id = entity.Show.Id,
                 Name = entity.Show.Name
             },
-            Image = entity.Image is null ? null : new BroadcastDetailsGetResponseImage
+            Image = entity.Image is null || imageUrl is null ? null : new BroadcastDetailsGetResponseImage
             {
                 Id = entity.Image.Id,
-                Url = entity.Image?.FileName ?? string.Empty
+                Url = imageUrl
             }
         };
 

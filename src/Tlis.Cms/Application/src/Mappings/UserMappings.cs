@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using Tlis.Cms.Application.Contracts.Api.Requests;
 using Tlis.Cms.Application.Contracts.Api.Requests.Users;
 using Tlis.Cms.Application.Contracts.Api.Responses;
 using Tlis.Cms.Application.Contracts.Api.Responses.UserGetResponses;
@@ -31,7 +30,7 @@ internal static class UserMappings
         return response;
     }
 
-    public static UserGetResponse? MapToUserGetResponse(User? entity)
+    public static UserGetResponse? MapToUserGetResponse(User? entity, string? profileImageUrl)
     {
         if (entity == null)
         {
@@ -50,12 +49,12 @@ internal static class UserMappings
             ExternalId = entity.ExternalId,
             MembershipHistory = entity.MembershipHistory.Select(MapToUserGetResponseUserMembershipHistory).ToList(),
             RoleHistory = entity.RoleHistory.Select(MapToUserGetResponseUserRoleHistory).ToList(),
-            ProfileImage = entity.ProfileImage is null
+            ProfileImage = entity.ProfileImage is null || profileImageUrl is null
                 ? null
                 : new UserGetResponseImage
                 {
                     Id = entity.ProfileImage.Id,
-                    Url = entity.ProfileImage.FileName
+                    Url = profileImageUrl
                 }
         };
 

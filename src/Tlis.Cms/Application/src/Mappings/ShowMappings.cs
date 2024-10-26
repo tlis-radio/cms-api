@@ -10,7 +10,7 @@ namespace Tlis.Cms.Application.Mappings;
 
 public static class ShowMappings
 {
-    public static ShowPaginationGetResponse MapToShowPaginationGetResponse(Show entity)
+    public static ShowPaginationGetResponse MapToShowPaginationGetResponse(Show entity, string? profileImageUrl)
     {
         return new ShowPaginationGetResponse
         {
@@ -19,11 +19,11 @@ public static class ShowMappings
             Description = entity.Description,
             CreatedDate = entity.CreatedDate,
             ModeratorNames = entity.Moderators.Select(x => $"{x.Firstname} {x.Lastname}").ToList(),
-            ProfileImageUrl = entity.ProfileImage?.FileName
+            ProfileImageUrl = profileImageUrl
         };
     }
 
-    public static ShowDetailsGetResponse MapToShowDetailsGetResponse(Show entity)
+    public static ShowDetailsGetResponse MapToShowDetailsGetResponse(Show entity, string? profileImageUrl)
     {
         var response = new ShowDetailsGetResponse
         {
@@ -39,10 +39,10 @@ public static class ShowMappings
                     Nickname = m.Nickname
                 };
             }).ToList(),
-            ProfileImage = entity.ProfileImage is null ? null : new ShowDetailsGetResponseImage
+            ProfileImage = entity.ProfileImage is null || profileImageUrl is null ? null : new ShowDetailsGetResponseImage
             {
                 Id = entity.ProfileImage.Id,
-                Url = entity.ProfileImage.FileName
+                Url = profileImageUrl
             }
         };
 

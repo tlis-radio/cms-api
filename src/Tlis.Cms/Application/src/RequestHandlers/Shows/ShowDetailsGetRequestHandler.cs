@@ -5,10 +5,13 @@ using Tlis.Cms.Application.Contracts.Api.Requests.Shows;
 using Tlis.Cms.Application.Contracts.Api.Responses.ShowDetailsGetResponses;
 using Tlis.Cms.Application.Mappings;
 using Tlis.Cms.Infrastructure.Persistence.Interfaces;
+using Tlis.Cms.Infrastructure.Services.Interfaces;
 
 namespace Tlis.Cms.Application.RequestHandlers.Shows;
 
-internal sealed class ShowDetailsGetRequestHandler(IUnitOfWork unitOfWork)
+internal sealed class ShowDetailsGetRequestHandler(
+    IUnitOfWork unitOfWork,
+    ICloudeStorageService cloudeStorageService)
     : IRequestHandler<ShowDetailsGetRequest, ShowDetailsGetResponse?>
 {
     public async Task<ShowDetailsGetResponse?> Handle(ShowDetailsGetRequest request, CancellationToken cancellationToken)
@@ -20,6 +23,6 @@ internal sealed class ShowDetailsGetRequestHandler(IUnitOfWork unitOfWork)
             return null;
         }
 
-        return ShowMappings.MapToShowDetailsGetResponse(show);
+        return ShowMappings.MapToShowDetailsGetResponse(show, cloudeStorageService.GetShowImageUrl(show.ProfileImage?.FileName));
     }
 }

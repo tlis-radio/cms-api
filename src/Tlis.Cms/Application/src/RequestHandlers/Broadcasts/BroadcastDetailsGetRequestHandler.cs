@@ -5,15 +5,18 @@ using Tlis.Cms.Application.Contracts.Api.Requests.Broadcasts;
 using Tlis.Cms.Application.Contracts.Api.Responses.BroadcastDetailsGetResponses;
 using Tlis.Cms.Application.Mappings;
 using Tlis.Cms.Infrastructure.Persistence.Interfaces;
+using Tlis.Cms.Infrastructure.Services.Interfaces;
 
 namespace Tlis.Cms.Application.RequestHandlers.Broadcasts;
 
-internal sealed class BroadcastDetailsGetRequestHandler(IUnitOfWork unitOfWork) : IRequestHandler<BroadcastDetailsGetRequest, BroadcastDetailsGetResponse?>
+internal sealed class BroadcastDetailsGetRequestHandler(
+    IUnitOfWork unitOfWork,
+    ICloudeStorageService cloudeStorageService) : IRequestHandler<BroadcastDetailsGetRequest, BroadcastDetailsGetResponse?>
 {
     public async Task<BroadcastDetailsGetResponse?> Handle(BroadcastDetailsGetRequest request, CancellationToken cancellationToken)
     {
         var broadcast = await unitOfWork.BroadcastRepository.GetByIdAsync(request.Id, asTracking: false);
 
-        return BroadcastMappings.MapToBroadcastDetailsGetResponse(broadcast);
+        return BroadcastMappings.MapToBroadcastDetailsGetResponse(broadcast, cloudeStorageService.GetBroadcastImageUrl(broadcast?.Image?.FileName));
     }
 }

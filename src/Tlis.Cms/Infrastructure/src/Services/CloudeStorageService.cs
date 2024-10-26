@@ -27,6 +27,15 @@ internal sealed class CloudStorageService(
     private readonly BlobContainerClient _broadcastImagesContainerClient = new(
         cloudeStorageConfiguration.Value.Authentication.ConnectionString,
         cloudeStorageConfiguration.Value.Cdn.Folders.BroadcastImages);
+
+    public string? GetUserImageUrl(string? fileName)
+        => fileName is null ? null : $"{_userImagesContainerClient.Uri.AbsoluteUri}/{fileName}";
+
+    public string? GetShowImageUrl(string? fileName)
+        => $"{_showImagesContainerClient.Uri.AbsoluteUri}/{fileName}";
+
+    public string? GetBroadcastImageUrl(string? fileName)
+        => $"{_broadcastImagesContainerClient.Uri.AbsoluteUri}/{fileName}";
     
     public Task<bool> DeleteUserImageAsync(string fileName)
         => DeleteFileAsync(_userImagesContainerClient, fileName);

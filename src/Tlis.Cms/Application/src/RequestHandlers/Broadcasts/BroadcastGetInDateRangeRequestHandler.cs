@@ -6,10 +6,13 @@ using Tlis.Cms.Application.Contracts.Api.Requests.Broadcasts;
 using Tlis.Cms.Application.Contracts.Api.Responses.BroadcastGetInDateRangeResponses;
 using Tlis.Cms.Application.Mappings;
 using Tlis.Cms.Infrastructure.Persistence.Interfaces;
+using Tlis.Cms.Infrastructure.Services.Interfaces;
 
 namespace Tlis.Cms.Application.RequestHandlers.Broadcasts;
 
-internal sealed class BroadcastGetInDateRangeRequestHandler(IUnitOfWork unitOfWork) : IRequestHandler<BroadcastGetInDateRangeRequest, BroadcastGetInDateRangeResponse?>
+internal sealed class BroadcastGetInDateRangeRequestHandler(
+    IUnitOfWork unitOfWork,
+    ICloudeStorageService cloudeStorageService) : IRequestHandler<BroadcastGetInDateRangeRequest, BroadcastGetInDateRangeResponse?>
 {
     public async Task<BroadcastGetInDateRangeResponse?> Handle(BroadcastGetInDateRangeRequest request, CancellationToken cancellationToken)
     {
@@ -17,7 +20,10 @@ internal sealed class BroadcastGetInDateRangeRequestHandler(IUnitOfWork unitOfWo
 
         return new BroadcastGetInDateRangeResponse
         {
-            Results = broadcasts.Select(BroadcastMappings.MapToBroadcastGetInDateRangeResponse).ToList()
+            Results = broadcasts.Select(x => BroadcastMappings.MapToBroadcastGetInDateRangeResponse(
+                x,
+                cloudeStorageService.GetBroadcastImageUrl(x.Image?.FileName)
+            )).ToList()
         };
     }
 }

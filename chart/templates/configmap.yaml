@@ -31,7 +31,9 @@ data:
             "Cdn": {
                 "Url": {{ .Values.config.cloudStorage.cdn.url | quote }},
                 "Folders": {
-                    "Images": "images"
+                    "UserImages": "user-images",
+                    "ShowImages": "show-images",
+                    "BroadcastImages": "broadcast-images"
                 }
             },
             "Authentication": {
