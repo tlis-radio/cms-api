@@ -1,6 +1,6 @@
 using System;
 
-namespace Tlis.Cms.Application.Contracts.Queries.MembershipStatus.GetAllQuery;
+namespace Tlis.Cms.Application.Contracts.Queries.MembershipStatuses.GetAllQuery;
 
 public sealed class GetAllQueryResponseItem
 {

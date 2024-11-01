@@ -4,10 +4,10 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Bogus;
 using Tlis.Cms.Api;
-using Tlis.Cms.Application.Contracts.Api.Requests.Shows;
-using Tlis.Cms.Application.Contracts.Api.Responses;
-using Tlis.Cms.Application.Contracts.Api.Responses.ShowDetailsGetResponses;
-using Tlis.Cms.Domain.Constants;
+using Tlis.Cms.Application.Contracts.Commands.Base;
+using Tlis.Cms.Application.Contracts.Commands.Shows.CreateCommand;
+using Tlis.Cms.Application.Contracts.Commands.Shows.UpdateCommand;
+using Tlis.Cms.Application.Contracts.Queries.Shows.GetDetailsQuery;
 
 namespace Tlis.Cms.Test.IntegrationTests;
 
@@ -25,7 +25,7 @@ public class ShowApiTests(ApiWebApplicationFactory<Program> factory) : IClassFix
     public async Task Create_show_update_profile_image_and_delete_show_all_responses_should_be_created()
     {
         // Arrange
-        var showCreateRequestGenerator = new Faker<ShowCreateRequest>()
+        var showCreateRequestGenerator = new Faker<CreateCommand>()
             .StrictMode(true)
             .RuleFor(x => x.Name, f => f.Random.Word())
             .RuleFor(x => x.Description, f => f.Lorem.Paragraph())
@@ -63,7 +63,7 @@ public class ShowApiTests(ApiWebApplicationFactory<Program> factory) : IClassFix
     public async Task CRUD_show_and_all_responses_should_be_created()
     {
         // Arrange
-        var showCreateRequestGenerator = new Faker<ShowCreateRequest>()
+        var showCreateRequestGenerator = new Faker<CreateCommand>()
             .StrictMode(true)
             .RuleFor(x => x.Name, f => f.Random.Word())
             .RuleFor(x => x.Description, f => f.Lorem.Paragraph())
@@ -71,7 +71,7 @@ public class ShowApiTests(ApiWebApplicationFactory<Program> factory) : IClassFix
 
         var showCreateRequest = showCreateRequestGenerator.Generate();
 
-        var showUpdateRequestGenerator = new Faker<ShowUpdateRequest>()
+        var showUpdateRequestGenerator = new Faker<UpdateCommand>()
             .RuleFor(x => x.Name, f => f.Random.Word())
             .RuleFor(x => x.Description, f => f.Lorem.Paragraph())
             .RuleFor(x => x.ModeratorIds, f => []);
@@ -85,7 +85,7 @@ public class ShowApiTests(ApiWebApplicationFactory<Program> factory) : IClassFix
 
         var updateResponse = await _client.PutAsJsonAsync($"show/{createContent!.Id}", showUpdateRequestRequest);
 
-        var getResponse = await _client.GetFromJsonAsync<ShowDetailsGetResponse>($"show/{createContent!.Id}", _jsonSerializerOptions);
+        var getResponse = await _client.GetFromJsonAsync<GetDetailsQueryResponse>($"show/{createContent!.Id}", _jsonSerializerOptions);
 
         var deleteResponse = await _client.DeleteAsync($"show/{createContent!.Id}");
 

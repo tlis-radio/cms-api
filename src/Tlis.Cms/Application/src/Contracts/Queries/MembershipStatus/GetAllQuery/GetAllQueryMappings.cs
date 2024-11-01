@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Tlis.Cms.Domain.Entities;
 
-namespace Tlis.Cms.Application.Contracts.Queries.MembershipStatus.GetAllQuery;
+namespace Tlis.Cms.Application.Contracts.Queries.MembershipStatuses.GetAllQuery;
 
 public static class GetAllQueryMappings
 {

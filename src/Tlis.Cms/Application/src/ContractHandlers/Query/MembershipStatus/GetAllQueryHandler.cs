@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Tlis.Cms.Application.Contracts.Queries.MembershipStatus.GetAllQuery;
+using Tlis.Cms.Application.Contracts.Queries.MembershipStatuses.GetAllQuery;
 using Tlis.Cms.Infrastructure.Persistence.Interfaces;
 
 namespace Tlis.Cms.Application.ContractHandlers.Query.MembershipStatus;

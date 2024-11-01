@@ -4,9 +4,10 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Bogus;
 using Tlis.Cms.Api;
-using Tlis.Cms.Application.Contracts.Api.Requests.Users;
-using Tlis.Cms.Application.Contracts.Api.Responses;
-using Tlis.Cms.Application.Contracts.Api.Responses.UserGetResponses;
+using Tlis.Cms.Application.Contracts.Commands.Base;
+using Tlis.Cms.Application.Contracts.Commands.Users.CreateCommand;
+using Tlis.Cms.Application.Contracts.Commands.Users.UpdateCommand;
+using Tlis.Cms.Application.Contracts.Queries.Users.GetDetailsQuery;
 using Tlis.Cms.Domain.Constants;
 
 namespace Tlis.Cms.Test.IntegrationTests;
@@ -25,7 +26,7 @@ public class UserApiTests(ApiWebApplicationFactory<Program> factory) : IClassFix
     public async Task Create_user_update_profile_image_and_delete_user_all_responses_should_be_created()
     {
         // Arrange
-        var userCreateRequestGenerator = new Faker<UserCreateRequest>()
+        var userCreateRequestGenerator = new Faker<CreateCommand>()
             .StrictMode(true)
             .RuleFor(x => x.Firstname, f => f.Person.FirstName)
             .RuleFor(x => x.Lastname, f => f.Person.LastName)
@@ -69,20 +70,20 @@ public class UserApiTests(ApiWebApplicationFactory<Program> factory) : IClassFix
     public async Task CRUD_user_without_admin_access_and_all_responses_should_be_created()
     {
         // Arrange
-        var userMembershipHistoryCreateRequestGenerator = new Faker<UserMembershipHistoryCreateRequest>()
+        var userMembershipHistoryCreateRequestGenerator = new Faker<CreateCommandMembershipHistory>()
             .StrictMode(true)
             .RuleFor(x => x.MembershipId, f => MembershipStatusId.Active)
             .RuleFor(x => x.ChangeDate, f => f.Date.Past().ToUniversalTime())
             .RuleFor(x => x.Description, f => f.Lorem.Sentence());
 
-        var userUpdateRequestMembershipHistoryGenerator = new Faker<UserUpdateRequestMembershipHistory>()
+        var userUpdateRequestMembershipHistoryGenerator = new Faker<UpdateCommandMembershipHistory>()
             .StrictMode(true)
             .RuleFor(x => x.Id, f => null)
             .RuleFor(x => x.MembershipId, f => MembershipStatusId.Archive)
             .RuleFor(x => x.ChangeDate, f => f.Date.Past().ToUniversalTime())
             .RuleFor(x => x.Description, f => f.Lorem.Sentence());
 
-        var userCreateRequestGenerator = new Faker<UserCreateRequest>()
+        var userCreateRequestGenerator = new Faker<CreateCommand>()
             .StrictMode(true)
             .RuleFor(x => x.Firstname, f => f.Person.FirstName)
             .RuleFor(x => x.Lastname, f => f.Person.LastName)
@@ -96,7 +97,7 @@ public class UserApiTests(ApiWebApplicationFactory<Program> factory) : IClassFix
 
         var userCreateRequest = userCreateRequestGenerator.Generate();
 
-        var userUpdateRequestGenerator = new Faker<UserUpdateRequest>()
+        var userUpdateRequestGenerator = new Faker<UpdateCommand>()
             .RuleFor(x => x.Firstname, f => f.Person.FirstName)
             .RuleFor(x => x.Lastname, f => f.Person.LastName)
             .RuleFor(x => x.Nickname, f => f.Person.UserName)
@@ -116,7 +117,7 @@ public class UserApiTests(ApiWebApplicationFactory<Program> factory) : IClassFix
 
         var updateResponse = await _client.PutAsJsonAsync($"user/{createContent!.Id}", userUpdateRequestRequest);
 
-        var getResponse = await _client.GetFromJsonAsync<UserGetResponse>($"user/{createContent!.Id}", _jsonSerializerOptions);
+        var getResponse = await _client.GetFromJsonAsync<GetDetailsQueryResponse>($"user/{createContent!.Id}", _jsonSerializerOptions);
 
         var deleteResponse = await _client.DeleteAsync($"user/{createContent!.Id}");
 

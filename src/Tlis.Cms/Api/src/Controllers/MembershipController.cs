@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Tlis.Cms.Api.Constants;
-using Tlis.Cms.Application.Contracts.Queries.MembershipStatus.GetAllQuery;
+using Tlis.Cms.Application.Contracts.Queries.MembershipStatuses.GetAllQuery;
 
 namespace Tlis.Cms.Api.Controllers;
 

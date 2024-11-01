@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using Tlis.Cms.Api;
-using Tlis.Cms.Application.Contracts.Api.Responses.RoleGetAllResponses;
+using Tlis.Cms.Application.Contracts.Queries.Roles.GetAllQuery;
 
 namespace Tlis.Cms.Test.IntegrationTests;
 
@@ -15,7 +15,7 @@ public class RoleApiTests(ApiWebApplicationFactory<Program> factory) : IClassFix
         // Act
         HttpResponseMessage response = await _client.GetAsync("role");
 
-        var content = await response.Content.ReadFromJsonAsync<RoleGetAllResponse>();
+        var content = await response.Content.ReadFromJsonAsync<GetAllQueryResponse>();
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);

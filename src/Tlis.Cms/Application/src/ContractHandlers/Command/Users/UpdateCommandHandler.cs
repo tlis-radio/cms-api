@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Tlis.Cms.Application.Contracts.Commands.Users.UpdateCommand;
-using Tlis.Cms.Application.Mappings;
 using Tlis.Cms.Domain.Entities;
 using Tlis.Cms.Infrastructure.Persistence.Interfaces;
 using Tlis.Cms.Infrastructure.Services.Interfaces;
