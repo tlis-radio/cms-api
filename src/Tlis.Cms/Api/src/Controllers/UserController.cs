@@ -5,9 +5,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Tlis.Cms.Api.Constants;
-using Tlis.Cms.Application.Contracts.Api.Requests.Users;
-using Tlis.Cms.Application.Contracts.Api.Responses;
-using Tlis.Cms.Application.Contracts.Api.Responses.UserGetResponses;
+using Tlis.Cms.Application.Contracts.Commands.Base;
+using Tlis.Cms.Application.Contracts.Commands.Users.CreateCommand;
+using Tlis.Cms.Application.Contracts.Commands.Users.DeleteCommand;
+using Tlis.Cms.Application.Contracts.Commands.Users.UpdateCommand;
+using Tlis.Cms.Application.Contracts.Commands.Users.UpdateProfileImageCommand;
+using Tlis.Cms.Application.Contracts.Queries.Users.GetDetailsQuery;
+using Tlis.Cms.Application.Contracts.Queries.Users.PaginationQuery;
 
 namespace Tlis.Cms.Api.Controllers;
 
@@ -19,13 +23,13 @@ public sealed class UserController(IMediator mediator) : ControllerBase
     [AllowAnonymous]
     [SwaggerOperation("Get user's details")]
     [Produces(MediaTypeNames.Application.Json)]
-    [ProducesResponseType(typeof(UserGetResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GetDetailsQueryResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async ValueTask<ActionResult<UserGetResponse>> GetUserDetails([FromRoute] Guid id)
+    public async ValueTask<ActionResult<GetDetailsQueryResponse>> GetUserDetails([FromRoute] Guid id)
     {
-        var response = await mediator.Send(new UserDetailsGetRequest { Id = id });
+        var response = await mediator.Send(new GetDetailsQuery { Id = id });
 
         return response is null
             ? NotFound()
@@ -35,11 +39,11 @@ public sealed class UserController(IMediator mediator) : ControllerBase
     [HttpGet("pagination")]
     [AllowAnonymous]
     [Produces(MediaTypeNames.Application.Json)]
-    [ProducesResponseType(typeof(PaginationResponse<UserPaginationGetResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PaginationQueryResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [SwaggerOperation("Paging users")]
-    public async ValueTask<ActionResult<PaginationResponse<UserPaginationGetResponse>>> Pagination([FromQuery] UserPaginationGetRequest request)
+    public async ValueTask<ActionResult<PaginationQueryResponse>> Pagination([FromQuery] PaginationQuery request)
     {
         var response = await mediator.Send(request);
 
@@ -56,7 +60,7 @@ public sealed class UserController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [SwaggerOperation("Create new user.", "Crate new user")]
-    public async ValueTask<ActionResult<BaseCreateResponse>> Create([FromBody, Required] UserCreateRequest request)
+    public async ValueTask<ActionResult<BaseCreateResponse>> Create([FromBody, Required] CreateCommand request)
     {
         var response = await mediator.Send(request);
 
@@ -72,7 +76,7 @@ public sealed class UserController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [SwaggerOperation("Update user")]
-    public async ValueTask<ActionResult> UpdateUser([FromRoute] Guid id, [FromBody, Required] UserUpdateRequest request)
+    public async ValueTask<ActionResult> UpdateUser([FromRoute] Guid id, [FromBody, Required] UpdateCommand request)
     {
         request.Id = id;
 
@@ -91,7 +95,7 @@ public sealed class UserController(IMediator mediator) : ControllerBase
     [SwaggerOperation("Update profile picture to existing user.")]
     public async ValueTask<ActionResult<BaseCreateResponse>> UpdateProfileImage([FromRoute] Guid id, [Required] IFormFile profileImage)
     {
-        var response = await mediator.Send(new UserUpdateProfileImageRequest
+        var response = await mediator.Send(new UpdateProfileImageCommand
         {
             Id = id,
             ProfileImage = profileImage
@@ -109,7 +113,7 @@ public sealed class UserController(IMediator mediator) : ControllerBase
     [SwaggerOperation("Delete user")]
     public async ValueTask<ActionResult> DeleteUser([FromRoute] Guid id)
     {
-        var response = await mediator.Send(new UserDeleteRequest { Id = id });
+        var response = await mediator.Send(new DeleteCommand { Id = id });
 
         return response ? NoContent() : NotFound();
     }

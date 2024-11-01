@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using Tlis.Cms.Api;
-using Tlis.Cms.Application.Contracts.Api.Responses.MembershipStatusGetAllResponses;
+using Tlis.Cms.Application.Contracts.Queries.MembershipStatuses.GetAllQuery;
 
 namespace Tlis.Cms.Test.IntegrationTests;
 
@@ -15,7 +15,7 @@ public class MembershipApiTests(ApiWebApplicationFactory<Program> factory) : ICl
         // Act
         HttpResponseMessage response = await _client.GetAsync("membership");
 
-        var content = await response.Content.ReadFromJsonAsync<MembershipStatusGetAllResponse>();
+        var content = await response.Content.ReadFromJsonAsync<GetAllQueryResponse>();
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);

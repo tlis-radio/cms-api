@@ -11,6 +11,7 @@ internal static class SwaggerSetup
         services.AddSwaggerGen(c =>
         {
             c.OperationFilter<ProblemDetailsOperationFilter>();
+            c.CustomSchemaIds(type => type.FullName);
             c.EnableAnnotations();
             c.AddSecurityDefinition(
                 "Bearer",

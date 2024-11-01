@@ -16,27 +16,16 @@ internal sealed class ImageService : IImageService
         return result;
     }
 
-    public Image ToImage(Stream stream)
-    {
-        return Image.NewFromStream(stream);
-    }
+    public Image ToImage(Stream stream) => Image.NewFromStream(stream);
 
-    public Image Resize(Image image, int width, int height)
-    {
-        return image.ThumbnailImage(width, height, crop: Enums.Interesting.Centre);
-    }
+    public Image Resize(Image image, int width, int height) => image.ThumbnailImage(width, height, crop: Enums.Interesting.Centre);
 
-    public Image Crop(Image image, int left, int top, int width, int height)
-    {
-        return image.Crop(left, top, width, height);
-    }
+    public Image Crop(Image image, int left, int top, int width, int height) => image.Crop(left, top, width, height);
 
     public Size GetSize(Image image)
-    {
-        return new Size
+        => new()
         {
             Height = image.Height,
             Width = image.Width
         };
-    }
 }

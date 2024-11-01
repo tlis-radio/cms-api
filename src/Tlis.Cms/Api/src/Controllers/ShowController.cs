@@ -5,9 +5,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Tlis.Cms.Api.Constants;
-using Tlis.Cms.Application.Contracts.Api.Requests.Shows;
-using Tlis.Cms.Application.Contracts.Api.Responses;
-using Tlis.Cms.Application.Contracts.Api.Responses.ShowDetailsGetResponses;
+using Tlis.Cms.Application.Contracts.Commands.Base;
+using Tlis.Cms.Application.Contracts.Commands.Shows.CreateCommand;
+using Tlis.Cms.Application.Contracts.Commands.Shows.DeleteCommand;
+using Tlis.Cms.Application.Contracts.Commands.Shows.UpdateCommand;
+using Tlis.Cms.Application.Contracts.Commands.Shows.UpdateProfileImageCommand;
+using Tlis.Cms.Application.Contracts.Queries.Shows.GetDetailsQuery;
+using Tlis.Cms.Application.Contracts.Queries.Shows.PaginationQuery;
 
 namespace Tlis.Cms.Api.Controllers;
 
@@ -18,14 +22,14 @@ public sealed class ShowController(IMediator mediator) : ControllerBase
     [HttpGet("{id:guid}")]
     [AllowAnonymous]
     [Produces(MediaTypeNames.Application.Json)]
-    [ProducesResponseType(typeof(ShowDetailsGetResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GetDetailsQueryResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [SwaggerOperation("Get show's details")]
-    public async ValueTask<ActionResult<ShowDetailsGetResponse>> GetDetails([FromRoute] Guid id)
+    public async ValueTask<ActionResult<GetDetailsQueryResponse>> GetDetails([FromRoute] Guid id)
     {
-        var response = await mediator.Send(new ShowDetailsGetRequest { Id = id });
+        var response = await mediator.Send(new GetDetailsQuery { Id = id });
 
         return response is null
             ? NotFound()
@@ -35,11 +39,11 @@ public sealed class ShowController(IMediator mediator) : ControllerBase
     [HttpGet("pagination")]
     [AllowAnonymous]
     [Produces(MediaTypeNames.Application.Json)]
-    [ProducesResponseType(typeof(PaginationResponse<ShowPaginationGetResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PaginationQueryResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [SwaggerOperation("Paging show's")]
-    public async ValueTask<ActionResult<PaginationResponse<ShowPaginationGetResponse>>> Pagination([FromQuery] ShowPaginationGetRequest request)
+    public async ValueTask<ActionResult<PaginationQueryResponse>> Pagination([FromQuery] PaginationQuery request)
     {
         var response = await mediator.Send(request);
 
@@ -56,7 +60,7 @@ public sealed class ShowController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [SwaggerOperation("Create show")]
-    public async ValueTask<ActionResult<BaseCreateResponse>> Create([FromBody, Required] ShowCreateRequest request)
+    public async ValueTask<ActionResult<BaseCreateResponse>> Create([FromBody, Required] CreateCommand request)
     {
         var response = await mediator.Send(request);
 
@@ -72,7 +76,7 @@ public sealed class ShowController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [SwaggerOperation("Update show's details")]
-    public async ValueTask<ActionResult> Update([FromRoute] Guid id, [FromBody, Required] ShowUpdateRequest request)
+    public async ValueTask<ActionResult> Update([FromRoute] Guid id, [FromBody, Required] UpdateCommand request)
     {
         request.Id = id;
 
@@ -90,7 +94,7 @@ public sealed class ShowController(IMediator mediator) : ControllerBase
     [SwaggerOperation("Update show's profile image")]
     public async ValueTask<ActionResult> UpdateProfileImage([FromRoute] Guid id, [Required] IFormFile profileImage)
     {
-        var response = await mediator.Send(new ShowUpdateProfileImageRequest { Id = id, ProfileImage = profileImage });
+        var response = await mediator.Send(new UpdateProfileImageCommand { Id = id, ProfileImage = profileImage });
 
         return response ? NoContent() : BadRequest();
     }
@@ -104,7 +108,7 @@ public sealed class ShowController(IMediator mediator) : ControllerBase
     [SwaggerOperation("Delete show")]
     public async ValueTask<ActionResult> Delete([FromRoute] Guid id)
     {
-        var response = await mediator.Send(new ShowDeleteRequest { Id = id });
+        var response = await mediator.Send(new DeleteCommand { Id = id });
 
         return response ? NoContent() : NotFound();
     }

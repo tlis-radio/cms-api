@@ -101,10 +101,7 @@ internal class UnitOfWork : IDisposable, IUnitOfWork
         }
     }
 
-    public Task<IDbContextTransaction> BeginTransactionAsync()
-    {
-        return _dbContext.Database.BeginTransactionAsync();
-    }
+    public Task<IDbContextTransaction> BeginTransactionAsync() => _dbContext.Database.BeginTransactionAsync();
 
     public void Dispose()
     {
