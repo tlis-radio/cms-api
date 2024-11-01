@@ -1,23 +1,5 @@
-using System;
-using System.Collections.Generic;
+using Tlis.Cms.Application.Contracts.Queries.Base;
 
 namespace Tlis.Cms.Application.Contracts.Queries.Users.PaginationQuery;
 
-public sealed class PaginationQueryResponse
-{
-    public required Guid Id { get; set; }
-
-    public required bool CmsAdminAccess { get; set; }
-
-    public required string Firstname { get; set; }
-
-    public required string Lastname { get; set; }
-
-    public required string Nickname { get; set; }
-
-    public required string? Email { get; set; }
-
-    public required List<string> Roles { get; set; } = [];
-
-    public required string? Status { get; set; }
-}
+public sealed class PaginationQueryResponse : BasePaginationQueryResponse<PaginationQueryResponseResult>;

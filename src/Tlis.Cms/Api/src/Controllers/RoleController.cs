@@ -4,8 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Tlis.Cms.Api.Constants;
-using Tlis.Cms.Application.Contracts.Api.Requests;
-using Tlis.Cms.Application.Contracts.Api.Responses.RoleGetAllResponses;
+using Tlis.Cms.Application.Contracts.Queries.Roles.GetAllQuery;
 
 namespace Tlis.Cms.Api.Controllers;
 
@@ -17,12 +16,12 @@ public sealed class RoleController(IMediator mediator) : ControllerBase
     [Authorize(Policy.UserRead)]
     [SwaggerOperation("Get all roles")]
     [Produces(MediaTypeNames.Application.Json)]
-    [ProducesResponseType(typeof(RoleGetAllResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GetAllQuery), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async ValueTask<ActionResult<RoleGetAllResponse>> GetAll()
+    public async ValueTask<ActionResult<GetAllQueryResponse>> GetAll()
     {
-        var response = await mediator.Send(new RoleGetAllRequest());
+        var response = await mediator.Send(new GetAllQuery());
 
         return response is null
             ? NotFound()

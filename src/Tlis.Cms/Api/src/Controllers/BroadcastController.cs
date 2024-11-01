@@ -5,10 +5,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Tlis.Cms.Api.Constants;
-using Tlis.Cms.Application.Contracts.Api.Requests.Broadcasts;
-using Tlis.Cms.Application.Contracts.Api.Responses;
-using Tlis.Cms.Application.Contracts.Api.Responses.BroadcastDetailsGetResponses;
-using Tlis.Cms.Application.Contracts.Api.Responses.BroadcastGetInDateRangeResponses;
+using Tlis.Cms.Application.Contracts.Commands.Base;
+using Tlis.Cms.Application.Contracts.Commands.Broadcasts.CreateCommand;
+using Tlis.Cms.Application.Contracts.Commands.Broadcasts.DeleteCommand;
+using Tlis.Cms.Application.Contracts.Commands.Broadcasts.UpdateCommand;
+using Tlis.Cms.Application.Contracts.Commands.Broadcasts.UpdateImageCommand;
+using Tlis.Cms.Application.Contracts.Queries.Broadcasts.GetDetailsQuery;
+using Tlis.Cms.Application.Contracts.Queries.Broadcasts.GetInDateRangeQuery;
+using Tlis.Cms.Application.Contracts.Queries.Broadcasts.PaginationQuery;
 
 namespace Tlis.Cms.Api.Controllers;
 
@@ -19,12 +23,12 @@ public sealed class BroadcastController(IMediator mediator) : ControllerBase
     [HttpGet("in-date-range/{from:datetime}/{to:datetime}")]
     [AllowAnonymous]
     [Produces(MediaTypeNames.Application.Json)]
-    [ProducesResponseType(typeof(BroadcastGetInDateRangeResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GetInDateRangeQuery), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async ValueTask<ActionResult<BroadcastGetInDateRangeResponse>> GetBroadcastInDateRange([FromRoute] DateTime from, [FromRoute] DateTime to)
+    public async ValueTask<ActionResult<GetInDateRangeQueryResponse>> GetBroadcastInDateRange([FromRoute] DateTime from, [FromRoute] DateTime to)
     {
-        var response = await mediator.Send(new BroadcastGetInDateRangeRequest { From = from, To = to });
+        var response = await mediator.Send(new GetInDateRangeQuery { From = from, To = to });
 
         return response is null
             ? NotFound()
@@ -34,13 +38,13 @@ public sealed class BroadcastController(IMediator mediator) : ControllerBase
     [HttpGet("{id:guid}")]
     [AllowAnonymous]
     [Produces(MediaTypeNames.Application.Json)]
-    [ProducesResponseType(typeof(BroadcastDetailsGetResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GetDetailsQuery), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [SwaggerOperation("Get broadcast's details")]
-    public async ValueTask<ActionResult<BroadcastDetailsGetResponse>> GetBroadcastDetails([FromRoute] Guid id)
+    public async ValueTask<ActionResult<GetDetailsQueryResponse>> GetBroadcastDetails([FromRoute] Guid id)
     {
-        var response = await mediator.Send(new BroadcastDetailsGetRequest { Id = id });
+        var response = await mediator.Send(new GetDetailsQuery { Id = id });
 
         return response is null
             ? NotFound()
@@ -51,11 +55,11 @@ public sealed class BroadcastController(IMediator mediator) : ControllerBase
     [HttpGet("pagination")]
     [AllowAnonymous]
     [Produces(MediaTypeNames.Application.Json)]
-    [ProducesResponseType(typeof(PaginationResponse<BroadcastPaginationGetResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PaginationQueryResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [SwaggerOperation("Paging broadcast's")]
-    public async ValueTask<ActionResult<PaginationResponse<BroadcastPaginationGetResponse>>> Pagination([FromQuery] BroadcastPaginationGetRequest request)
+    public async ValueTask<ActionResult<PaginationQueryResponse>> Pagination([FromQuery] PaginationQuery request)
     {
         var response = await mediator.Send(request);
 
@@ -72,7 +76,7 @@ public sealed class BroadcastController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [SwaggerOperation("Create broadcast")]
-    public async ValueTask<ActionResult<BaseCreateResponse>> CreateShow([FromBody, Required] BroadcastCreateRequest request)
+    public async ValueTask<ActionResult<BaseCreateResponse>> CreateShow([FromBody, Required] CreateCommand request)
     {
         var response = await mediator.Send(request);
 
@@ -88,7 +92,7 @@ public sealed class BroadcastController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [SwaggerOperation("Update broadcast's details")]
-    public async ValueTask<ActionResult> UpdateShow([FromRoute] Guid id, [FromBody, Required] BroadcastUpdateRequest request)
+    public async ValueTask<ActionResult> UpdateShow([FromRoute] Guid id, [FromBody, Required] UpdateCommand request)
     {
         request.Id = id;
 
@@ -106,7 +110,7 @@ public sealed class BroadcastController(IMediator mediator) : ControllerBase
     [SwaggerOperation("Update broadcast's image")]
     public async ValueTask<ActionResult> UpdateImage([FromRoute] Guid id, [Required] IFormFile image)
     {
-        var response = await mediator.Send(new BroadcastUpdateImageRequest { Id = id, Image = image });
+        var response = await mediator.Send(new UpdateImageCommand { Id = id, Image = image });
 
         return response ? NoContent() : BadRequest();
     }
@@ -120,7 +124,7 @@ public sealed class BroadcastController(IMediator mediator) : ControllerBase
     [SwaggerOperation("Delete program")]
     public async ValueTask<ActionResult> Delete([FromRoute] Guid id)
     {
-        var response = await mediator.Send(new BroadcastDeleteRequest { Id = id });
+        var response = await mediator.Send(new DeleteCommand { Id = id });
 
         return response ? NoContent() : NotFound();
     }

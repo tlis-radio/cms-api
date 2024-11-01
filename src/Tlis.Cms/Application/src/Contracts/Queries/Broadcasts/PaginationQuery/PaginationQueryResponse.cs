@@ -1,18 +1,5 @@
-using System;
+using Tlis.Cms.Application.Contracts.Queries.Base;
 
 namespace Tlis.Cms.Application.Contracts.Queries.Broadcasts.PaginationQuery;
 
-public sealed class PaginationQueryResponse
-{
-    public required Guid Id { get; set; }
-
-    public required string Name { get; set; }
-
-    public required string Description { get; set; }
-
-    public required DateTime StartDate { get; set; }
-
-    public required DateTime EndDate { get; set; }
-
-    public required Guid ShowId { get; set; }
-}
+public sealed class PaginationQueryResponse : BasePaginationQueryResponse<PaginationQueryResponseResult>;

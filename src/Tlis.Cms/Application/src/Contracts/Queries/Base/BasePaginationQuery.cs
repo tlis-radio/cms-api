@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Tlis.Cms.Application.Contracts.Queries.Base;
 
-public abstract class BasePaginationQuery<TResponse> : IRequest<BasePaginationQueryResponse<TResponse>>
+public abstract class BasePaginationQuery<TResult> : IRequest<TResult>
 {
     [DefaultValue(20)]
     [Range(1, 40)]

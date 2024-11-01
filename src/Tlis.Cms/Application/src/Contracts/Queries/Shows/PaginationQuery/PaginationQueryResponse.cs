@@ -1,19 +1,5 @@
-using System;
-using System.Collections.Generic;
+using Tlis.Cms.Application.Contracts.Queries.Base;
 
 namespace Tlis.Cms.Application.Contracts.Queries.Shows.PaginationQuery;
 
-public sealed class PaginationQueryResponse
-{
-    public required Guid Id { get; set; }
-
-    public required string Name { get; set; }
-
-    public required string Description { get; set; }
-
-    public required List<string> ModeratorNames { get; set; } = [];
-
-    public required DateOnly CreatedDate { get; set; }
-
-    public required string? ProfileImageUrl { get; set; }
-}
+public sealed class PaginationQueryResponse : BasePaginationQueryResponse<PaginationQueryResponseResult>;
