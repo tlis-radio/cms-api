@@ -22,7 +22,7 @@ public sealed class ShowController(IMediator mediator) : ControllerBase
     [HttpGet("{id:guid}")]
     [AllowAnonymous]
     [Produces(MediaTypeNames.Application.Json)]
-    [ProducesResponseType(typeof(GetDetailsQuery), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GetDetailsQueryResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]

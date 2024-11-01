@@ -16,7 +16,7 @@ public sealed class RoleController(IMediator mediator) : ControllerBase
     [Authorize(Policy.UserRead)]
     [SwaggerOperation("Get all roles")]
     [Produces(MediaTypeNames.Application.Json)]
-    [ProducesResponseType(typeof(GetAllQuery), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GetAllQueryResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async ValueTask<ActionResult<GetAllQueryResponse>> GetAll()
