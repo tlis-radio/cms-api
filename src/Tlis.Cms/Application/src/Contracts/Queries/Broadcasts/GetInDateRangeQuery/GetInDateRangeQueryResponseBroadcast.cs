@@ -1,0 +1,20 @@
+using System;
+
+namespace Tlis.Cms.Application.Contracts.Queries.Broadcasts.GetInDateRangeQuery;
+
+public class GetInDateRangeQueryResponseBroadcast
+{
+    public required Guid Id { get; set; }
+
+    public required GetInDateRangeQueryResponseBroadcastImage? Image { get; set; }
+
+    public required string Name { get; set; }
+
+    public required string Description { get; set; }
+
+    public required DateTime StartDate { get; set; }
+
+    public required DateTime EndDate { get; set; }
+
+    public required GetInDateRangeQueryResponseBroadcastShow Show { get; set; }
+}

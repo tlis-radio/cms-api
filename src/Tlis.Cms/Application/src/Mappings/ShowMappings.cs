@@ -48,15 +48,4 @@ public static class ShowMappings
 
         return response;
     }
-
-    public static Show MapToShow(ShowCreateRequest request)
-    {
-        return new Show
-        {
-            Name = request.Name,
-            Description = request.Description,
-            CreatedDate = DateOnly.FromDateTime(DateTime.UtcNow),
-            ShowsUsers = request.ModeratorIds.Select(x => new ShowsUsers { UserId = x }).ToList()
-        };
-    }
 }

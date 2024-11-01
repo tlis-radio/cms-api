@@ -9,19 +9,6 @@ namespace Tlis.Cms.Application.Mappings;
 
 public static class BroadcastMappings
 {
-    public static Broadcast MapToBroadcast(BroadcastCreateRequest request)
-    {
-        return new Broadcast
-        {
-            Name = request.Name,
-            ExternalUrl = string.Empty, // TODO: sem sa budu davat veci ako url na slido atd.
-            Description = request.Description,
-            StartDate = request.StartDate,
-            EndDate = request.EndDate,
-            ShowId = request.ShowId
-        };
-    }
-
     public static BroadcastGetInDateRangeResponseBroadcast MapToBroadcastGetInDateRangeResponse(Broadcast entity, string? imageUrl)
     {
         ArgumentNullException.ThrowIfNull(entity.Show);

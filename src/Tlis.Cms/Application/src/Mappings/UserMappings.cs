@@ -74,46 +74,6 @@ internal static class UserMappings
             PreferNicknameOverName = dto.PreferNicknameOverName
         };
     }
-    
-    public static UserRoleHistory MapToUserRoleHistory(UserUpdateRequestRoleHistory dto)
-    {
-        return new UserRoleHistory
-        {
-            RoleId = dto.RoleId,
-            FunctionEndDate = dto.FunctionEndDate,
-            FunctionStartDate = dto.FunctionStartDate,
-            Description = dto.Description
-        };
-    }
-
-    public static UserRoleHistory MapToExistingUserRoleHistory(UserRoleHistory existing, UserUpdateRequestRoleHistory dto)
-    {
-        existing.RoleId = dto.RoleId;
-        existing.FunctionEndDate = dto.FunctionEndDate;
-        existing.FunctionStartDate = dto.FunctionStartDate;
-        existing.Description = dto.Description;
-
-        return existing;
-    }
-
-    public static UserMembershipHistory MapToUserMembershipHistory(UserUpdateRequestMembershipHistory dto)
-    {
-        return new UserMembershipHistory
-        {
-            MembershipId = dto.MembershipId,
-            ChangeDate = dto.ChangeDate,
-            Description = dto.Description
-        };
-    }
-
-    public static UserMembershipHistory MapToExistingUserMembershipHistory(UserMembershipHistory existing, UserUpdateRequestMembershipHistory dto)
-    {
-        existing.MembershipId = dto.MembershipId;
-        existing.ChangeDate = dto.ChangeDate;
-        existing.Description = dto.Description;
-
-        return existing;
-    }
 
     private static UserGetResponseUserRoleHistory MapToUserGetResponseUserRoleHistory(UserRoleHistory entity)
     {
