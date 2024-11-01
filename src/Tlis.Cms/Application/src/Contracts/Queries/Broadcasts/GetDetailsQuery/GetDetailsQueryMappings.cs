@@ -14,7 +14,7 @@ public static class GetDetailsQueryMappings
 
         ArgumentNullException.ThrowIfNull(entity.Show);
 
-        var response =  new GetDetailsQueryResponse
+        return new GetDetailsQueryResponse
         {
             Id = entity.Id,
             Name = entity.Name,
@@ -32,7 +32,5 @@ public static class GetDetailsQueryMappings
                 Url = imageUrl
             }
         };
-
-        return response;
     }
 }

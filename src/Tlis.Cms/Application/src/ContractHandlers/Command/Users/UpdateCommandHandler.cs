@@ -72,7 +72,7 @@ internal sealed class UpdateCommandHandler(
 
     private static void ResolveRoleHistory(User existing, List<UpdateCommandRoleHistory> updatedHistory)
     {
-        var added = updatedHistory.Where(x => x.Id is null).Select(x => x.MapToUserRoleHistory());
+        var added = updatedHistory.Where(x => x.Id is null).Select(x => x.MapToEntity());
 
         var existingOptionsDict = existing.RoleHistory.ToDictionary(key => key.Id, value => value);
         var existingOptionsUpdated = updatedHistory.Where(x => x.Id is not null).Select(x => existingOptionsDict[x.Id!.Value].Update(x));
@@ -82,7 +82,7 @@ internal sealed class UpdateCommandHandler(
 
     private static void ResolveMembershipHistory(User existing, List<UpdateCommandMembershipHistory> updatedHistory)
     {
-        var added = updatedHistory.Where(x => x.Id is null).Select(x => x.MapToUserMembershipHistory());
+        var added = updatedHistory.Where(x => x.Id is null).Select(x => x.MapToEntity());
 
         var existingOptionsDict = existing.MembershipHistory.ToDictionary(key => key.Id, value => value);
         var existingOptionsUpdated = updatedHistory.Where(x => x.Id is not null).Select(x => existingOptionsDict[x.Id!.Value].Update(x));

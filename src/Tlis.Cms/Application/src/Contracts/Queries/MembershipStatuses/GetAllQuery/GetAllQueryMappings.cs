@@ -8,8 +8,7 @@ namespace Tlis.Cms.Application.Contracts.Queries.MembershipStatuses.GetAllQuery;
 public static class GetAllQueryMappings
 {
     public static GetAllQueryResponse MapToResponse(this List<Membership> memberships)
-    {
-        return new GetAllQueryResponse
+        => new()
         {
             Results = memberships.Select(membership => new GetAllQueryResponseItem
             {
@@ -17,5 +16,4 @@ public static class GetAllQueryMappings
                 Status = Enum.GetName(membership.Status) ?? throw new Exception($"Unable to Enum.GetName for {membership.Status}")
             }).ToList()
         };
-    }
 }

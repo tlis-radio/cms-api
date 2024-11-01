@@ -8,8 +8,7 @@ namespace Tlis.Cms.Application.Contracts.Queries.Broadcasts.GetInDateRangeQuery;
 public static class GetInDateRangeQueryMappings
 {
     public static GetInDateRangeQueryResponse MapToResponse(this List<Broadcast> entities, ICloudeStorageService cloudeStorageService)
-    {
-        var response = new GetInDateRangeQueryResponse
+        => new()
         {
             Results = entities.Select(x => new GetInDateRangeQueryResponseBroadcast
             {
@@ -29,9 +28,5 @@ public static class GetInDateRangeQueryMappings
                     Url = cloudeStorageService.GetBroadcastImageUrl(x.Image.FileName)
                 }
             }).ToList()
-
         };
-
-        return response;
-    }
 }

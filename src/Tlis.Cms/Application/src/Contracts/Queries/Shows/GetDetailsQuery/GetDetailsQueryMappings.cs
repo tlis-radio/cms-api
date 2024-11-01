@@ -21,19 +21,21 @@ public static class GetDetailsQueryMappings
             Name = entity.Name,
             Description = entity.Description,
             CreatedDate = entity.CreatedDate,
-            Moderators = entity.Moderators.Select(m =>
-            {
-                return new GetDetailsQueryResponseModerator
-                {
-                    Id = m.Id,
-                    Nickname = m.Nickname
-                };
-            }).ToList(),
+            Moderators = entity.Moderators.Select(MapToGetDetailsQueryResponseModerator).ToList(),
             ProfileImage = entity.ProfileImage is null || profileImageUrl is null ? null : new GetDetailsQueryResponseProfileImage
             {
                 Id = entity.ProfileImage.Id,
                 Url = profileImageUrl
             }
+        };
+    }
+
+    private static GetDetailsQueryResponseModerator MapToGetDetailsQueryResponseModerator(User entity)
+    {
+        return new GetDetailsQueryResponseModerator
+        {
+            Id = entity.Id,
+            Nickname = entity.Nickname
         };
     }
 }

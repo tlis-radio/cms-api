@@ -4,26 +4,22 @@ namespace Tlis.Cms.Application.Contracts.Commands.Users.UpdateCommand;
 
 public static class UpdateCommandMappings
 {
-    public static UserRoleHistory MapToUserRoleHistory(this UpdateCommandRoleHistory request)
-    {
-        return new UserRoleHistory
+    public static UserRoleHistory MapToEntity(this UpdateCommandRoleHistory data)
+        => new()
         {
-            RoleId = request.RoleId,
-            FunctionEndDate = request.FunctionEndDate,
-            FunctionStartDate = request.FunctionStartDate,
-            Description = request.Description
+            RoleId = data.RoleId,
+            FunctionEndDate = data.FunctionEndDate,
+            FunctionStartDate = data.FunctionStartDate,
+            Description = data.Description
         };
-    }
 
-    public static UserMembershipHistory MapToUserMembershipHistory(this UpdateCommandMembershipHistory request)
-    {
-        return new UserMembershipHistory
+    public static UserMembershipHistory MapToEntity(this UpdateCommandMembershipHistory data)
+        => new()
         {
-            MembershipId = request.MembershipId,
-            ChangeDate = request.ChangeDate,
-            Description = request.Description
+            MembershipId = data.MembershipId,
+            ChangeDate = data.ChangeDate,
+            Description = data.Description
         };
-    }
 
     public static UserRoleHistory Update(this UserRoleHistory existing, UpdateCommandRoleHistory @new)
     {

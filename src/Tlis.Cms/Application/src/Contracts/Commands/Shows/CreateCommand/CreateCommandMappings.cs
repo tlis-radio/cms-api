@@ -7,14 +7,12 @@ namespace Tlis.Cms.Application.Contracts.Commands.Shows.CreateCommand;
 
 public static class CreateCommandMappings
 {
-    public static Show MapToShow(this CreateCommand request)
-    {
-        return new Show
+    public static Show MapToShow(this CreateCommand command)
+        => new()
         {
-            Name = request.Name,
-            Description = request.Description,
+            Name = command.Name,
+            Description = command.Description,
             CreatedDate = DateOnly.FromDateTime(DateTime.UtcNow),
-            ShowsUsers = request.ModeratorIds.Select(x => new ShowsUsers { UserId = x }).ToList()
+            ShowsUsers = command.ModeratorIds.Select(x => new ShowsUsers { UserId = x }).ToList()
         };
-    }
 }

@@ -7,22 +7,23 @@ namespace Tlis.Cms.Application.Contracts.Queries.Broadcasts.PaginationQuery;
 public static class PaginationQueryMappings
 {
     public static PaginationQueryResponse MapToResponse(this PaginationDto<Broadcast> pagination)
-    {
-        return new PaginationQueryResponse
+        => new()
         {
             Total = pagination.Total,
             Limit = pagination.Limit,
             Page = pagination.Page,
             TotalPages = pagination.TotalPages,
-            Results = pagination.Results.Select(x => new PaginationQueryResponseResult
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Description = x.Description,
-                StartDate = x.StartDate,
-                EndDate = x.EndDate,
-                ShowId = x.ShowId
-            }).ToList()
+            Results = pagination.Results.Select(MapToPaginationQueryResponseResult).ToList()
         };
-    }
+
+    private static PaginationQueryResponseResult MapToPaginationQueryResponseResult(this Broadcast broadcast)
+        => new()
+        {
+            Id = broadcast.Id,
+            Name = broadcast.Name,
+            Description = broadcast.Description,
+            StartDate = broadcast.StartDate,
+            EndDate = broadcast.EndDate,
+            ShowId = broadcast.ShowId
+        };
 }

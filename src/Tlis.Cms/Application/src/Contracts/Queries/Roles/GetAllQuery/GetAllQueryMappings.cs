@@ -7,8 +7,7 @@ namespace Tlis.Cms.Application.Contracts.Queries.Roles.GetAllQuery;
 public static class GetAllQueryMappings
 {
     public static GetAllQueryResponse MapToResponse(this List<Role> entities)
-    {
-        return new GetAllQueryResponse
+        => new()
         {
             Results = entities.Select(x => new GetAllQueryResponseItem
             {
@@ -16,5 +15,4 @@ public static class GetAllQueryMappings
                 Name = x.Name
             }).ToList()
         };
-    }
 }

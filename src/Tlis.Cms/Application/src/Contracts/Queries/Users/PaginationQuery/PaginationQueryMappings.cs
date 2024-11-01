@@ -8,8 +8,7 @@ namespace Tlis.Cms.Application.Contracts.Queries.Users.PaginationQuery;
 public static class PaginationQueryMappings
 {
     public static PaginationQueryResponse MapToResponse(this PaginationDto<User> entities)
-    {
-        return new PaginationQueryResponse
+        => new()
         {
             Total = entities.Total,
             Limit = entities.Limit,
@@ -17,7 +16,6 @@ public static class PaginationQueryMappings
             TotalPages = entities.TotalPages,
             Results = entities.Results.Select(MapToPaginationQueryResponseResult).ToList()
         };
-    }
 
     private static PaginationQueryResponseResult MapToPaginationQueryResponseResult(User user)
     {

@@ -40,8 +40,7 @@ public static class GetDetailsQueryMappings
     }
 
     private static GetDetailsQueryResponseMembershipHistory MapToGetDetailsQueryResponseMembershipHistory(UserMembershipHistory entity)
-    {
-        return new GetDetailsQueryResponseMembershipHistory
+        => new()
         {
             Id = entity.Id,
             ChangeDate = entity.ChangeDate,
@@ -52,11 +51,9 @@ public static class GetDetailsQueryMappings
                 Status = entity.Membership.Status
             }
         };
-    }
 
     private static GetDetailsQueryResponseRoleHistory MapToGetDetailsQueryResponseRoleHistory(UserRoleHistory entity)
-    {
-        return new GetDetailsQueryResponseRoleHistory
+        => new()
         {
             Id = entity.Id,
             Role = MapToGetDetailsQueryResponseRoleHistoryRole(entity.Role),
@@ -64,14 +61,11 @@ public static class GetDetailsQueryMappings
             FunctionEndDate = entity.FunctionEndDate,
             Description = entity.Description
         };
-    }
 
     private static GetDetailsQueryResponseRoleHistoryRole MapToGetDetailsQueryResponseRoleHistoryRole(Role role)
-    {
-        return new GetDetailsQueryResponseRoleHistoryRole
+        => new()
         {
             Id = role.Id,
             Name = role.Name
         };
-    }
 }

@@ -4,17 +4,15 @@ namespace Tlis.Cms.Application.Contracts.Commands.Users.CreateCommand;
 
 public static class CreateCommandMappings
 {
-    public static User MapToUser(this CreateCommand request)
-    {
-        return new User
+    public static User MapToUser(this CreateCommand command)
+        => new()
         {
-            Firstname = request.Firstname,
-            Lastname = request.Lastname,
-            Nickname = request.Nickname,
-            Email = request.Email,
-            CmsAdminAccess = request.CmsAdminAccess,
-            Abouth = request.Abouth,
-            PreferNicknameOverName = request.PreferNicknameOverName
+            Firstname = command.Firstname,
+            Lastname = command.Lastname,
+            Nickname = command.Nickname,
+            Email = command.Email,
+            CmsAdminAccess = command.CmsAdminAccess,
+            Abouth = command.Abouth,
+            PreferNicknameOverName = command.PreferNicknameOverName
         };
-    }
 }
